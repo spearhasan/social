@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Title (70 characters max for SEO) -->
+  <title>Spear Hasan | Official Website - YouTuber, Content Creator & Storyteller</title>
+  
+  <!-- SEO Description (160 characters max) -->
+  <meta name="description" content="Welcome to iQ Hasan’s official site — YouTuber, content creator, and digital storyteller. Explore videos, blogs, and exclusive creative work." />
+  
+  <!-- Keywords (use relevant long-tail + short-tail) -->
+  <meta name="keywords" content="iQ Hasan, iqhasan, YouTube creator, digital storyteller, Bangladesh influencer, Hasan Vlog, content creator" />
+  
+  <!-- Author -->
+  <meta name="author" content="iQ Hasan" />
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://spearhasan.github.io/in" />
+  
+  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="iQ Hasan | Official Website - YouTuber & Creator" />
+  <meta property="og:description" content="Discover iQ Hasan — storyteller, YouTuber, and creative digital artist." />
+  <meta property="og:image" content="https://iqhasan.github.io/in/cover.png" />
+  <meta property="og:url" content="https://iqhasan.github.io/in" />
+  <meta property="og:site_name" content="Spear Hasan Web" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Spear Hasan | Official Website - YouTuber & Creator" />
+  <meta name="twitter:description" content="Follow iQ Hasan’s creative world of videos, vlogs, and storytelling." />
+  <meta name="twitter:image" content="https://spearhasan.github.io/in/pngs/cover.png" />
+  <meta name="twitter:site" content="@spearehasan" />
+  
+  <!-- Structured Data (JSON-LD for Google Knowledge Panel) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "iQ Hasan",
+      "url": "https://iqhasan.github.io/in",
+      "image": "https://iqhasan.github.io/in/cover.png",
+      "sameAs": [
+        "https://www.youtube.com/@iqehasan",
+        "https://www.instagram.com/iqehasan",
+        "https://www.facebook.com/iqehasan",
+        "https://www.tiktok.com/@iqehasan"
+      ],
+      "jobTitle": "Content Creator",
+      "description": "YouTuber, storyteller, and creative influencer from Bangladesh."
+    }
+  </script>
+  
+  <!-- Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="pngs/iconx.png" type="image/png">
+  
+  <!-- Robots (ensure search visibility) -->
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  
+  <!-- Theme Color (for mobile browsers) -->
+  <meta name="theme-color" content="#0d0d0d" />
+</head>
+
+<body class="light">
+  <!-- Background Canvas -->
+  <canvas id="bg"></canvas>
+
+  <!-- Top Buttons -->
+  <div class="menu-toggle" id="menuToggle" title="Menu"><i class="fa-solid fa-bars"></i></div>
+  <div class="anim-toggle" id="animToggle" title="Switch Animation"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+  <div class="theme-toggle" id="themeToggle" title="Toggle Theme"><i class="fas fa-adjust"></i></div>
+  <div class="translate-toggle" id="translateBtn" title="Translate">
+  <i class="fa-solid fa-language"></i>
+</div>
+    <!-- Share Popup -->
+  <div class="overlay" id="shareOverlay"></div>
+  <div class="popup" id="sharePopup">
+    <span class="close-btn" id="closeSharePopup">×</span>
+    <h2>Share This Page</h2>
+    <img id="qrImage" src="" alt="QR Code" />
+    <p id="shareLink"></p>
+    <button id="copyShareBtn">Copy Link</button>
+  </div>
+  
+  <div id="langToast"></div>
+  <!-- Sidebar Menu -->
+  <div id="menuOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="top-row">
+      <span class="close-menu" id="closeMenu" title="Close"></span>
+    </div>
+    <img class="menu-item" id="cover" src="pngs/cover.png" alt="mb" />
+    <nav class="menu-list">
+      <a class="menu-item" data-target="tab-home">
+  <i class="fa-solid fa-house"></i> <span>Home</span>
+</a>
+
+
+<a class="menu-item" 
+   href="mailto: iqehasan@hotmail.com?subject=✉️%20যোগাযোগ&body=নামঃ%20%0D%0Aঠিকানাঃ%20%0D%0Aমন্তব্যঃ%20">
+  <i class="fa-solid fa-envelope"></i> 
+  <span>Email</span>
+    <a class="menu-item shareBtn" href="javascript:void(0)">
+  <i class="fa-solid fa-share-nodes"></i> <span>Share</span>
+</a>
+
+<div class="menu-item" id="visitorBox">
+  <i class="fa-solid fa-eye"></i>
+  <span>Visited:</span>
+  <span id="visitorCount">0</span>
+</div>
+ </nav>
+  </aside>
+  
+<div id="tab-home" class="tab-content">
+  <!-- এখানে হোম কনটেন্ট থাকবে -->
+    <div class="container" id="title">
+    <img class="profile-pic" src="pngs/iqhasan.png" alt="Profile Picture">
+    
+    <a id="profileName" class="social-link">
+  <i id="icon"></i>
+  <span id="name"></span> <span class="verified-badge"></span>
+</a>
+    
+ <marquee class="cx"></marquee>
+
+    <div class="links">
+      <a class="facebook" href="https://www.facebook.com/spearhasan" target="_blank"><i class="fab fa-facebook"></i>Spear Hasan</a>
+       <a class="facebook" href="https://www.facebook.com/iqehasan" target="_blank"><i class="fab fa-facebook"></i>𝐢𝐐 𝐇𝐚𝐬𝐚𝐍</i>
+       <a class="facebook" href="https://www.facebook.com/iqhasanblog" target="_blank"><i class="fab fa-facebook"></i>iQ HasaN BloG</a>
+
+       
+      <a class="tiktok"   href="https://www.tiktok.com/@iqehasan" target="_blank"><i class="fab fa-tiktok"></i>𝐢𝐐 𝐇𝐚𝐬𝐚𝐍</a>
+      <a class="youtube"  href="https://youtube.com/@iqehasan"   target="_blank"><i class="fab fa-youtube"></i>IQ HASAN</a>
+            <!-- নতুন More বাটন -->
+  
+    </div>
+  </div>
+
+  
+</div>
+
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+  <!--********************************* -->
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+  <script src="main.js"></script>
+</body>
+</html>
