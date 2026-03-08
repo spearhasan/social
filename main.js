@@ -1,11 +1,46 @@
+function changeProfile() {
+  const p = profiles[i];
+
+  nameEl.classList.remove("show");
+  iconEl.classList.remove("show");
+  nameEl.classList.add("hide");
+  iconEl.classList.add("hide");
+
+  setTimeout(() => {
+
+    nameEl.textContent = p.name;
+    iconEl.className = p.icon || "";
+
+    // body theme check
+    const isDark = document.body.classList.contains("dark");
+
+    if (i === 0 || i === profiles.length - 1) {
+      // first & last name
+      linkEl.style.color = isDark ? "#ffffff" : "#000000";
+    } else {
+      linkEl.style.color = p.color;
+    }
+
+    nameEl.classList.remove("hide");
+    iconEl.classList.remove("hide");
+    nameEl.classList.add("show");
+    iconEl.classList.add("show");
+
+    i = (i + 1) % profiles.length;
+
+  }, 500);
+}
+
+
+
 const profiles = [
-    { name: "iQ HassN", color: "#ffffff" },
+    { name: "iQ HassN"},
    { name: "iQ HasaN BloG", icon: "fab fa-facebook", color: "#1877F2" },
   { name: "IQ HASAN", icon: "fab fa-youtube", color: "#ff0000" },
   { name: "iQ Hasan", icon: "fab fa-facebook", color: "#1877F2" },
   { name: "𝐢𝐐 𝐇𝐚𝐬𝐚𝐍", icon: "fab fa-tiktok", color: "#ff0050" },
   { name: "Spear Hasan", icon: "fab fa-facebook", color: "#1877F2" },
-      { name: "Spear Hassn", color: "#ffffff" },
+      { name: "Spear Hassn"},
 ];
 
 let i = 0;
