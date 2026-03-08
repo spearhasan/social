@@ -1,11 +1,11 @@
 const profiles = [
-    { name: "iQ HassN", color: "#fffff" },
+    { name: "iQ HassN", color: "#ffffff" },
    { name: "iQ HasaN BloG", icon: "fab fa-facebook", color: "#1877F2" },
   { name: "IQ HASAN", icon: "fab fa-youtube", color: "#ff0000" },
   { name: "iQ Hasan", icon: "fab fa-facebook", color: "#1877F2" },
   { name: "𝐢𝐐 𝐇𝐚𝐬𝐚𝐍", icon: "fab fa-tiktok", color: "#ff0050" },
   { name: "Spear Hasan", icon: "fab fa-facebook", color: "#1877F2" },
-      { name: "Spear Hassn", color: "#fffff" },
+      { name: "Spear Hassn", color: "#ffffff" },
 ];
 
 let i = 0;
