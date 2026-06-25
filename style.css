@@ -1,8 +1,9 @@
 .social-link {
+  margin: 6px;
   display: inline-flex;      /* পাশাপাশি রাখার জন্য */
   align-items: center;       /* vertical alignment */
   justify-content: center;   /* horizontal alignment */
-  gap: 8px;                  /* icon এবং name এর মধ্যে দূরত্ব */
+  gap: 2px;                  /* icon এবং name এর মধ্যে দূরত্ব */
   font-size: 28px;
   font-weight: bold;
   text-decoration: none;
@@ -56,15 +57,23 @@ body.dark  { background: #121212; color: #fff; }
   cursor: pointer;
   width: 38px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: 50%;
   display: grid;
   place-items: center;
+  border: 1px solid #000000;
   backdrop-filter: blur(50px);
   background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
   box-shadow: 0 4px 14px rgba(0,0,0,0.15);
   user-select: none;
 }
+
+body.dark .theme-toggle,
+body.dark .anim-toggle,
+body.dark .menu-toggle,
+body.dark .translate-toggle {
+  border: 1px solid #FFFFFF;
+}
+
 .menu-toggle { left: 15px; }
 .theme-toggle { right: 15px; }
 .anim-toggle { right: 60px; }
@@ -83,7 +92,7 @@ body.dark  { background: #121212; color: #fff; }
   text-align: center;
   border-radius: 20px;
   border: 3px solid #1BFF00;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(30px);
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -95,6 +104,7 @@ body.dark  { background: #121212; color: #fff; }
   width: 70%;
   max-width: 200px;
   height: auto;
+  border: 4px  solid greenyellow;
   border-radius: 50%;
   display: block;
   margin: 0 auto;
@@ -113,9 +123,9 @@ h1 { font-size: 28px; margin: 10px 0; }
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
-  margin: 6px;
+  margin: 12px;
   border: 2px solid;
-  background: rgba(255,255,255,0.1);
+  background: #FF000000;
 }
 
 .facebook {
@@ -125,7 +135,7 @@ h1 { font-size: 28px; margin: 10px 0; }
 .tiktok   {
   color: #000; 
   border-color: #000; 
-  background: #fff; 
+  background: #fff;
 }
 .youtube  {
   color: red; 
@@ -157,7 +167,7 @@ body.light #copyShareBtn {
 .overlay, #shareOverlay, #menuOverlay {
   position: fixed;
   inset: 0;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(10px);
   background: rgba(0,0,0,0.2);
   z-index: 99;
   display: none;
@@ -521,6 +531,16 @@ body.light #visitorBox{
 }
 
 #langToast.show {
-  opacity: 1;
-  transform: translateY(0);
+position: fixed;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+background: #333;
+color: #fff;
+padding: 12px 20px;
+border-radius: 6px;
+font-size: 15px;
+z-index: 999;
+display: none;
+animation: fade 0.3s ease;
 }
