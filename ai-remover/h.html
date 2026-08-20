@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>CleanPix — Image Privacy Cleaner</title>
+
+<style>
+:root{
+    --bg:#080c18;
+    --panel:#111827;
+    --panel2:#172033;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --border:#263247;
+    --primary:#6d5dfc;
+    --primary2:#8b7fff;
+    --success:#22c55e;
+    --danger:#ef4444;
+    --radius:20px;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:
+        radial-gradient(circle at 10% 0%,rgba(109,93,252,.18),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(56,189,248,.10),transparent 28%),
+        var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,system-ui,-apple-system,BlinkMacSystemFont,
+        "Segoe UI",Roboto,Arial,sans-serif;
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    width:min(1100px,calc(100% - 28px));
+    margin:auto;
+    padding:22px 0 50px;
+}
+
+/* HEADER */
+
+header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:24px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:46px;
+    height:46px;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--primary),#39bdf8);
+    font-size:22px;
+    box-shadow:0 8px 30px rgba(109,93,252,.25);
+}
+
+.brand h1{
+    margin:0;
+    font-size:20px;
+}
+
+.brand p{
+    margin:3px 0 0;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.privacy-badge{
+    border:1px solid rgba(34,197,94,.25);
+    background:rgba(34,197,94,.08);
+    color:#86efac;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:12px;
+    white-space:nowrap;
+}
+
+/* HERO */
+
+.hero{
+    text-align:center;
+    margin:10px auto 25px;
+    max-width:700px;
+}
+
+.hero h2{
+    font-size:clamp(28px,6vw,46px);
+    line-height:1.05;
+    margin:0 0 12px;
+    letter-spacing:-1.5px;
+}
+
+.hero h2 span{
+    background:linear-gradient(90deg,#8b7fff,#38bdf8);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+    line-height:1.6;
+    margin:0;
+}
+
+/* UPLOAD */
+
+.upload-card{
+    border:1px solid var(--border);
+    background:rgba(17,24,39,.86);
+    border-radius:var(--radius);
+    padding:22px;
+}
+
+.dropzone{
+    min-height:250px;
+    border:2px dashed #334155;
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:30px 15px;
+    transition:.2s;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(109,93,252,.04),
+            rgba(56,189,248,.03)
+        );
+}
+
+.dropzone.drag{
+    border-color:var(--primary2);
+    background:rgba(109,93,252,.10);
+    transform:scale(1.005);
+}
+
+.upload-icon{
+    width:68px;
+    height:68px;
+    border-radius:20px;
+    display:grid;
+    place-items:center;
+    background:#1d2740;
+    font-size:30px;
+    margin-bottom:15px;
+}
+
+.dropzone h3{
+    margin:0 0 8px;
+}
+
+.dropzone p{
+    margin:0 0 18px;
+    color:var(--muted);
+    font-size:14px;
+}
+
+.primary{
+    border:0;
+    color:white;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    padding:13px 20px;
+    border-radius:12px;
+    font-weight:700;
+    box-shadow:0 8px 25px rgba(109,93,252,.22);
+}
+
+.primary:hover{
+    filter:brightness(1.08);
+}
+
+.secondary{
+    border:1px solid var(--border);
+    background:var(--panel2);
+    color:var(--text);
+    padding:11px 15px;
+    border-radius:11px;
+}
+
+input[type=file]{
+    display:none;
+}
+
+/* WORKSPACE */
+
+.workspace{
+    display:none;
+    margin-top:20px;
+}
+
+.workspace.show{
+    display:block;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:18px;
+}
+
+/* SETTINGS */
+
+.panel{
+    background:rgba(17,24,39,.9);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px;
+}
+
+.panel-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.panel-title h3{
+    margin:0;
+    font-size:17px;
+}
+
+.small{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.option{
+    margin-bottom:18px;
+}
+
+.option label{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+    font-size:13px;
+    color:#dbe4f0;
+}
+
+select{
+    width:100%;
+    border:1px solid var(--border);
+    background:#0c1322;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    outline:none;
+}
+
+input[type=range]{
+    width:100%;
+    accent-color:var(--primary);
+}
+
+.check-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border:1px solid var(--border);
+    background:#0c1322;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:10px;
+}
+
+.check-row span{
+    font-size:13px;
+}
+
+.switch{
+    width:42px;
+    height:23px;
+    position:relative;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#334155;
+    border-radius:20px;
+    transition:.2s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    width:17px;
+    height:17px;
+    left:3px;
+    top:3px;
+    background:white;
+    border-radius:50%;
+    transition:.2s;
+}
+
+.switch input:checked + .slider{
+    background:var(--primary);
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(19px);
+}
+
+/* FILE LIST */
+
+.file-list{
+    margin-top:20px;
+}
+
+.file-item{
+    display:grid;
+    grid-template-columns:65px 1fr auto;
+    gap:12px;
+    align-items:center;
+    border:1px solid var(--border);
+    background:#0d1525;
+    padding:10px;
+    border-radius:13px;
+    margin-bottom:9px;
+}
+
+.thumb{
+    width:65px;
+    height:65px;
+    object-fit:cover;
+    border-radius:10px;
+    background:#1e293b;
+}
+
+.file-name{
+    font-size:13px;
+    font-weight:600;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.file-meta{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:5px;
+}
+
+.remove{
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:9px;
+    background:#24151a;
+    color:#fca5a5;
+}
+
+/* PROGRESS */
+
+.progress-box{
+    display:none;
+    margin-top:18px;
+}
+
+.progress-box.show{
+    display:block;
+}
+
+.progress-track{
+    height:8px;
+    border-radius:20px;
+    background:#243044;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,var(--primary),#38bdf8);
+    transition:.2s;
+}
+
+.progress-text{
+    display:flex;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:7px;
+}
+
+/* ACTIONS */
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:18px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+/* RESULTS */
+
+.results{
+    display:none;
+    margin-top:20px;
+}
+
+.results.show{
+    display:block;
+}
+
+.result-success{
+    padding:15px;
+    border-radius:13px;
+    background:rgba(34,197,94,.08);
+    border:1px solid rgba(34,197,94,.20);
+    color:#bbf7d0;
+    margin-bottom:12px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.stat{
+    background:#0d1525;
+    border:1px solid var(--border);
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.stat strong{
+    display:block;
+    font-size:19px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:25px;
+    color:var(--muted);
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    color:#64748b;
+    font-size:12px;
+    margin-top:25px;
+    line-height:1.6;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .privacy-badge{
+        display:none;
+    }
+}
+
+@media(max-width:520px){
+
+    .app{
+        width:min(100% - 18px,1100px);
+        padding-top:12px;
+    }
+
+    .upload-card,
+    .panel{
+        padding:14px;
+    }
+
+    .dropzone{
+        min-height:220px;
+    }
+
+    .actions{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .file-item{
+        grid-template-columns:52px 1fr auto;
+    }
+
+    .thumb{
+        width:52px;
+        height:52px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+    <div class="brand">
+        <div class="logo">✦</div>
+        <div>
+            <h1>CleanPix</h1>
+            <p>Image Privacy Cleaner</p>
+        </div>
+    </div>
+
+    <div class="privacy-badge">
+        ● 100% Browser Processing
+    </div>
+</header>
+
+
+<section class="hero">
+    <h2>Clean your images.<br><span>Keep your privacy.</span></h2>
+    <p>
+        Remove embedded image metadata and export fresh image files
+        directly inside your browser.
+    </p>
+</section>
+
+
+<section class="upload-card">
+
+    <div
+        class="dropzone"
+        id="dropzone"
+    >
+
+        <div class="upload-icon">↥</div>
+
+        <h3>Drop your images here</h3>
+
+        <p>
+            JPG, PNG or WebP · Multiple files supported
+        </p>
+
+        <label
+            for="fileInput"
+            class="primary"
+        >
+            Choose Images
+        </label>
+
+        <input
+            id="fileInput"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+        >
+
+    </div>
+
+
+    <div
+        class="workspace"
+        id="workspace"
+    >
+
+        <div class="grid">
+
+            <!-- FILES -->
+
+            <div class="panel">
+
+                <div class="panel-title">
+                    <h3>Selected Images</h3>
+                    <span
+                        class="small"
+                        id="fileCount"
+                    >
+                        0 files
+                    </span>
+                </div>
+
+                <div id="fileList"></div>
+
+                <div
+                    class="empty"
+                    id="emptyMessage"
+                >
+                    No images selected.
+                </div>
+
+            </div>
+
+
+            <!-- SETTINGS -->
+
+            <div class="panel">
+
+                <div class="panel-title">
+                    <h3>Export Settings</h3>
+                </div>
+
+
+                <div class="option">
+
+                    <label>
+                        <span>Output format</span>
+                    </label>
+
+                    <select id="format">
+
+                        <option value="auto">
+                            Automatic
+                        </option>
+
+                        <option value="image/jpeg">
+                            JPEG
+                        </option>
+
+                        <option value="image/png">
+                            PNG
+                        </option>
+
+                        <option value="image/webp">
+                            WebP
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    class="option"
+                    id="qualityOption"
+                >
+
+                    <label>
+
+                        <span>Quality</span>
+
+                        <strong id="qualityValue">
+                            95%
+                        </strong>
+
+                    </label>
+
+                    <input
+                        type="range"
+                        id="quality"
+                        min="50"
+                        max="100"
+                        value="95"
+                    >
+
+                </div>
+
+
+                <div class="option">
+
+                    <label>
+                        <span>Maximum width</span>
+                    </label>
+
+                    <select id="maxWidth">
+
+                        <option value="0">
+                            Original resolution
+                        </option>
+
+                        <option value="3840">
+                            3840 px
+                        </option>
+
+                        <option value="2560">
+                            2560 px
+                        </option>
+
+                        <option value="1920">
+                            1920 px
+                        </option>
+
+                        <option value="1280">
+                            1280 px
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="check-row">
+
+                    <span>
+                        Remove embedded metadata
+                    </span>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            checked
+                            disabled
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="check-row">
+
+                    <span>
+                        Preserve image proportions
+                    </span>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="preserve"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-box" id="progressBox">
+
+            <div class="progress-track">
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
+            </div>
+
+            <div class="progress-text">
+
+                <span id="progressStatus">
+                    Preparing...
+                </span>
+
+                <span id="progressPercent">
+                    0%
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="primary"
+                id="processBtn"
+            >
+                Clean Images
+            </button>
+
+            <button
+                class="secondary"
+                id="clearBtn"
+            >
+                Clear All
+            </button>
+
+            <button
+                class="primary full"
+                id="downloadAllBtn"
+                style="display:none"
+            >
+                Download All
+            </button>
+
+        </div>
+
+
+        <div
+            class="results"
+            id="results"
+        >
+
+            <div class="result-success">
+                ✓ Images successfully exported as new files.
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <strong id="processedCount">
+                        0
+                    </strong>
+                    <span>Processed</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="originalTotal">
+                        0 KB
+                    </strong>
+                    <span>Original</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="newTotal">
+                        0 KB
+                    </strong>
+                    <span>Exported</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+    CleanPix processes images locally in your browser.
+    No image upload or server storage is used by this page.
+    <br>
+    Metadata cleaning is a privacy feature and does not guarantee
+    removal of AI-generated-content detection signals.
+</footer>
+
+</div>
+
+
+<script>
+"use strict";
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const dropzone =
+    document.getElementById("dropzone");
+
+const workspace =
+    document.getElementById("workspace");
+
+const fileList =
+    document.getElementById("fileList");
+
+const emptyMessage =
+    document.getElementById("emptyMessage");
+
+const fileCount =
+    document.getElementById("fileCount");
+
+const processBtn =
+    document.getElementById("processBtn");
+
+const clearBtn =
+    document.getElementById("clearBtn");
+
+const downloadAllBtn =
+    document.getElementById("downloadAllBtn");
+
+const formatSelect =
+    document.getElementById("format");
+
+const quality =
+    document.getElementById("quality");
+
+const qualityValue =
+    document.getElementById("qualityValue");
+
+const maxWidth =
+    document.getElementById("maxWidth");
+
+const preserve =
+    document.getElementById("preserve");
+
+const progressBox =
+    document.getElementById("progressBox");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const progressStatus =
+    document.getElementById("progressStatus");
+
+const progressPercent =
+    document.getElementById("progressPercent");
+
+const results =
+    document.getElementById("results");
+
+const processedCount =
+    document.getElementById("processedCount");
+
+const originalTotal =
+    document.getElementById("originalTotal");
+
+const newTotal =
+    document.getElementById("newTotal");
+
+const qualityOption =
+    document.getElementById("qualityOption");
+
+
+/* =========================
+   STATE
+========================= */
+
+let files = [];
+let processedFiles = [];
+
+
+/* =========================
+   UTILITIES
+========================= */
+
+function formatBytes(bytes){
+
+    if(bytes < 1024)
+        return bytes + " B";
+
+    if(bytes < 1024 * 1024)
+        return (bytes / 1024).toFixed(1) + " KB";
+
+    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+
+function extensionFor(type){
+
+    if(type === "image/png")
+        return "png";
+
+    if(type === "image/webp")
+        return "webp";
+
+    return "jpg";
+}
+
+
+function cleanName(name){
+
+    return name
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[^\w\- ]+/g,"")
+        .trim()
+        .replace(/\s+/g,"-") || "image";
+}
+
+
+/* =========================
+   FILE ADD
+========================= */
+
+function addFiles(newFiles){
+
+    const valid =
+        Array.from(newFiles).filter(
+            file =>
+                file.type === "image/jpeg" ||
+                file.type === "image/png" ||
+                file.type === "image/webp"
+        );
+
+    for(const file of valid){
+
+        const exists =
+            files.some(
+                f =>
+                    f.name === file.name &&
+                    f.size === file.size &&
+                    f.lastModified === file.lastModified
+            );
+
+        if(!exists){
+            files.push(file);
+        }
+    }
+
+    renderFiles();
+}
+
+
+fileInput.addEventListener(
+    "change",
+    e => addFiles(e.target.files)
+);
+
+
+/* =========================
+   DRAG & DROP
+========================= */
+
+[
+    "dragenter",
+    "dragover"
+].forEach(event => {
+
+    dropzone.addEventListener(event,e => {
+
+        e.preventDefault();
+        dropzone.classList.add("drag");
+
+    });
+
+});
+
+
+[
+    "dragleave",
+    "drop"
+].forEach(event => {
+
+    dropzone.addEventListener(event,e => {
+
+        e.preventDefault();
+        dropzone.classList.remove("drag");
+
+    });
+
+});
+
+
+dropzone.addEventListener("drop",e => {
+
+    addFiles(e.dataTransfer.files);
+
+});
+
+
+/* =========================
+   RENDER FILES
+========================= */
+
+function renderFiles(){
+
+    workspace.classList.toggle(
+        "show",
+        files.length > 0
+    );
+
+    emptyMessage.style.display =
+        files.length ? "none" : "block";
+
+    fileList.innerHTML = "";
+
+    fileCount.textContent =
+        files.length +
+        (files.length === 1 ? " file" : " files");
+
+
+    files.forEach((file,index) => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "file-item";
+
+
+        const img =
+            document.createElement("img");
+
+        img.className = "thumb";
+
+        img.alt = "";
+
+        const url =
+            URL.createObjectURL(file);
+
+        img.src = url;
+
+        img.onload = () =>
+            URL.revokeObjectURL(url);
+
+
+        const middle =
+            document.createElement("div");
+
+        const name =
+            document.createElement("div");
+
+        name.className = "file-name";
+
+        name.textContent = file.name;
+
+
+        const meta =
+            document.createElement("div");
+
+        meta.className = "file-meta";
+
+        meta.textContent =
+            file.type.split("/")[1].toUpperCase() +
+            " · " +
+            formatBytes(file.size);
+
+
+        middle.appendChild(name);
+        middle.appendChild(meta);
+
+
+        const remove =
+            document.createElement("button");
+
+        remove.className = "remove";
+
+        remove.textContent = "×";
+
+        remove.title = "Remove";
+
+        remove.addEventListener(
+            "click",
+            () => {
+
+                files.splice(index,1);
+                processedFiles = [];
+
+                downloadAllBtn.style.display = "none";
+                results.classList.remove("show");
+
+                renderFiles();
+
+            }
+        );
+
+
+        item.appendChild(img);
+        item.appendChild(middle);
+        item.appendChild(remove);
+
+        fileList.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================
+   QUALITY UI
+========================= */
+
+quality.addEventListener("input",() => {
+
+    qualityValue.textContent =
+        quality.value + "%";
+
+});
+
+
+formatSelect.addEventListener("change",() => {
+
+    qualityOption.style.display =
+        formatSelect.value === "image/png"
+            ? "none"
+            : "block";
+
+});
+
+
+/* =========================
+   IMAGE LOADER
+========================= */
+
+function loadImage(file){
+
+    return new Promise((resolve,reject) => {
+
+        const url =
+            URL.createObjectURL(file);
+
+        const img =
+            new Image();
+
+        img.onload = () => {
+
+            URL.revokeObjectURL(url);
+
+            resolve(img);
+
+        };
+
+        img.onerror = () => {
+
+            URL.revokeObjectURL(url);
+
+            reject(
+                new Error("Could not load image")
+            );
+
+        };
+
+        img.src = url;
+
+    });
+
+}
+
+
+/* =========================
+   RESIZE
+========================= */
+
+function calculateDimensions(
+    width,
+    height,
+    limit
+){
+
+    if(!limit || width <= limit){
+
+        return {
+            width,
+            height
+        };
+
+    }
+
+    const ratio =
+        limit / width;
+
+    return {
+        width: Math.round(width * ratio),
+        height: Math.round(height * ratio)
+    };
+
+}
+
+
+/* =========================
+   EXPORT IMAGE
+========================= */
+
+function canvasToBlob(
+    canvas,
+    type,
+    qualityValue
+){
+
+    return new Promise(resolve => {
+
+        canvas.toBlob(
+            blob => resolve(blob),
+            type,
+            qualityValue
+        );
+
+    });
+
+}
+
+
+/* =========================
+   PROCESS SINGLE IMAGE
+========================= */
+
+async function processImage(file){
+
+    const img =
+        await loadImage(file);
+
+
+    let outputType =
+        formatSelect.value;
+
+    if(outputType === "auto"){
+
+        if(
+            file.type === "image/jpeg" ||
+            file.type === "image/png" ||
+            file.type === "image/webp"
+        ){
+
+            outputType = file.type;
+
+        }else{
+
+            outputType = "image/png";
+
+        }
+
+    }
+
+
+    const limit =
+        Number(maxWidth.value);
+
+
+    const dimensions =
+        calculateDimensions(
+            img.naturalWidth,
+            img.naturalHeight,
+            limit
+        );
+
+
+    const canvas =
+        document.createElement("canvas");
+
+
+    canvas.width =
+        dimensions.width;
+
+    canvas.height =
+        dimensions.height;
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    /*
+       For JPEG/WEBP output, use a white
+       background when source has transparency.
+    */
+
+    if(
+        outputType === "image/jpeg"
+    ){
+
+        ctx.fillStyle = "#ffffff";
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    }
+
+
+    ctx.drawImage(
+        img,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const q =
+        Number(quality.value) / 100;
+
+
+    const blob =
+        await canvasToBlob(
+            canvas,
+            outputType,
+            q
+        );
+
+
+    if(!blob){
+
+        throw new Error(
+            "Image export failed"
+        );
+
+    }
+
+
+    const ext =
+        extensionFor(outputType);
+
+
+    const base =
+        cleanName(file.name);
+
+
+    const outputName =
+        base +
+        "_cleaned." +
+        ext;
+
+
+    return {
+        blob,
+        name:outputName,
+        original:file.size
+    };
+
+}
+
+
+/* =========================
+   PROCESS ALL
+========================= */
+
+processBtn.addEventListener(
+    "click",
+    async () => {
+
+        if(!files.length)
+            return;
+
+
+        processBtn.disabled = true;
+
+        clearBtn.disabled = true;
+
+        downloadAllBtn.style.display =
+            "none";
+
+        results.classList.remove("show");
+
+        progressBox.classList.add("show");
+
+        progressBar.style.width = "0%";
+
+        processedFiles = [];
+
+
+        let totalOriginal = 0;
+        let totalNew = 0;
+
+
+        for(let i=0;i<files.length;i++){
+
+            const file = files[i];
+
+            progressStatus.textContent =
+                "Processing " +
+                (i + 1) +
+                " of " +
+                files.length;
+
+
+            try{
+
+                const result =
+                    await processImage(file);
+
+
+                processedFiles.push(result);
+
+                totalOriginal +=
+                    result.original;
+
+                totalNew +=
+                    result.blob.size;
+
+
+            }catch(error){
+
+                console.error(error);
+
+            }
+
+
+            const percent =
+                Math.round(
+                    ((i + 1) / files.length) * 100
+                );
+
+
+            progressBar.style.width =
+                percent + "%";
+
+            progressPercent.textContent =
+                percent + "%";
+
+
+            /*
+              Give the browser a moment between
+              large images so the UI remains responsive.
+            */
+
+            await new Promise(
+                resolve =>
+                    setTimeout(resolve,20)
+            );
+
+        }
+
+
+        processedCount.textContent =
+            processedFiles.length;
+
+        originalTotal.textContent =
+            formatBytes(totalOriginal);
+
+        newTotal.textContent =
+            formatBytes(totalNew);
+
+
+        progressStatus.textContent =
+            "Completed";
+
+
+        results.classList.add("show");
+
+
+        if(processedFiles.length){
+
+            downloadAllBtn.style.display =
+                "block";
+
+        }
+
+
+        processBtn.disabled = false;
+
+        clearBtn.disabled = false;
+
+    }
+);
+
+
+/* =========================
+   DOWNLOAD ONE
+========================= */
+
+function downloadBlob(blob,name){
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download = name;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+
+    setTimeout(
+        () => URL.revokeObjectURL(url),
+        1500
+    );
+
+}
+
+
+/* =========================
+   DOWNLOAD ALL
+========================= */
+
+downloadAllBtn.addEventListener(
+    "click",
+    async () => {
+
+        /*
+          Uses individual downloads instead of
+          requiring an external ZIP library.
+        */
+
+        for(let i=0;i<processedFiles.length;i++){
+
+            const item =
+                processedFiles[i];
+
+            downloadBlob(
+                item.blob,
+                item.name
+            );
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(resolve,250)
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================
+   CLEAR
+========================= */
+
+clearBtn.addEventListener(
+    "click",
+    () => {
+
+        files = [];
+        processedFiles = [];
+
+        fileInput.value = "";
+
+        workspace.classList.remove("show");
+
+        fileList.innerHTML = "";
+
+        results.classList.remove("show");
+
+        progressBox.classList.remove("show");
+
+        downloadAllBtn.style.display =
+            "none";
+
+        progressBar.style.width =
+            "0%";
+
+    }
+);
+
+
+/* =========================
+   KEYBOARD ACCESSIBILITY
+========================= */
+
+dropzone.addEventListener(
+    "keydown",
+    e => {
+
+        if(e.key === "Enter" || e.key === " "){
+
+            e.preventDefault();
+
+            fileInput.click();
+
+        }
+
+    }
+);
+
+dropzone.tabIndex = 0;
+
+</script>
+
+</body>
+</html>
