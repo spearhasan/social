@@ -1,4 +1,4 @@
-.social-link {
+hu.social-link {
   margin: 6px;
   display: inline-flex;
   align-items: center;
@@ -482,7 +482,7 @@ body.dark .desc{
   .wrap{ padding:12px; margin:12px; }  
 }  
 #sharePopup {
-
+background: #ffffff
 display: flex;
 flex-direction: column;
 gap: 6px;   /* gap কমানো */
