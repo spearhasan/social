@@ -596,39 +596,13 @@ object-fit: cover;
 object-position: center center;
 
 position: relative;
-z-index: -1;
+z-index: 0;
 }
 
 /* ==============================
 WHITE GRADIENT
 ============================== */
 
-.box-main::after {
-content: "";
-
-position: absolute;
-
-left: 0;
-top: 0;
-
-width: 100%;
-height: 70.6667%;
-
-z-index: 1;
-
-pointer-events: none;
-
-background: linear-gradient(
-to bottom,
-transparent 0%,
-transparent 55%,
-rgba(255,255,255,0.15) 58%,
-rgba(255,255,255,0.35) 68%,
-rgba(255,255,255,0.60) 78%,
-rgba(255,255,255,0.82) 88%,
-white 100%
-);
-}
 .cx{
   font-family: myfont;
   position: relative;
