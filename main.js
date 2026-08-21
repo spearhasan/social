@@ -1,22 +1,19 @@
-
-
-/* ==============================
-   MARQUEE LANGUAGE SWITCH SYSTEM
-   For <marquee class="cx">
-================================ */
-
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* =========================================================
+     MARQUEE LANGUAGE SWITCH SYSTEM
+  ========================================================= */
 
   let marquee = document.querySelector(".cx");
   const translateBtn = document.getElementById("translateBtn");
 
-  if (!marquee || !translateBtn) return;
+  if (marquee && translateBtn) {
 
-  const marqueeTexts = [
-    {
-      code: "bn",
-      name: "বাংলা",
-      text: `
+    const marqueeTexts = [
+      {
+        code: "bn",
+        name: "বাংলা",
+        text: `
 আল্লাহ ধৈর্যধারীদের সাথে আছেন।
 আল্লাহ সর্বজ্ঞ, কিছুই তাঁর অজানা নয়।
 আল্লাহর পরিকল্পনাই সর্বোত্তম।
@@ -29,12 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
 আল্লাহ কারো উপর বিন্দুমাত্র জুলুম করেন না।
 আল্লাহ শ্রেষ্ঠ বিচারক।
 আল্লাহ উত্তম প্রতিদানকারী।
-      `
-    },
-    {
-      code: "en",
-      name: "English",
-      text: `
+        `
+      },
+
+      {
+        code: "en",
+        name: "English",
+        text: `
 Allah is with those who are patient.
 Allah is All-Knowing; nothing is hidden from Him.
 Allah’s plan is always the best.
@@ -47,12 +45,13 @@ Allah alone is the Provider.
 Allah does not wrong anyone even by an atom.
 Allah is the best Judge.
 Allah is the best Rewarder.
-      `
-    },
-    {
-      code: "hi",
-      name: "हिंदी",
-      text: `
+        `
+      },
+
+      {
+        code: "hi",
+        name: "हिंदी",
+        text: `
 अल्लाह धैर्य रखने वालों के साथ है।
 अल्लाह सर्वज्ञ है, उससे कुछ भी छिपा नहीं।
 अल्लाह की योजना ही सर्वोत्तम है।
@@ -65,12 +64,13 @@ Allah is the best Rewarder.
 अल्लाह किसी पर रत्ती भर भी ज़ुल्म नहीं करता।
 अल्लाह सबसे उत्तम न्यायाधीश है।
 अल्लाह सबसे अच्छा प्रतिफल देने वाला है।
-      `
-    },
-    {
-      code: "ur",
-      name: "اردو",
-      text: `
+        `
+      },
+
+      {
+        code: "ur",
+        name: "اردو",
+        text: `
 اللہ صبر کرنے والوں کے ساتھ ہے۔
 اللہ سب کچھ جانتا ہے، اس سے کچھ بھی پوشیدہ نہیں۔
 اللہ کا منصوبہ ہی بہترین ہوتا ہے۔
@@ -83,12 +83,13 @@ Allah is the best Rewarder.
 اللہ کسی پر ذرہ برابر بھی ظلم نہیں کرتا۔
 اللہ سب سے بہترین فیصلہ کرنے والا ہے۔
 اللہ سب سے بہتر بدلہ دینے والا ہے۔
-      `
-    },
-    {
-      code: "ar",
-      name: "العربية",
-      text: `
+        `
+      },
+
+      {
+        code: "ar",
+        name: "العربية",
+        text: `
 الله مع الصابرين.
 الله عليم بكل شيء ولا يخفى عليه شيء.
 خطة الله هي الأفضل دائمًا.
@@ -101,398 +102,567 @@ Allah is the best Rewarder.
 الله لا يظلم أحدًا ولو ذرة.
 الله خير الحاكمين.
 الله خير المجازين.
-      `
+        `
+      }
+    ];
+
+    let languageIndex = 0;
+
+    marquee.innerHTML = marqueeTexts[0].text;
+    marquee.setAttribute("direction", "left");
+
+    function switchLanguage() {
+
+      languageIndex =
+        (languageIndex + 1) % marqueeTexts.length;
+
+      const lang =
+        marqueeTexts[languageIndex];
+
+      const newMarquee =
+        document.createElement("marquee");
+
+      newMarquee.className = "cx";
+
+      newMarquee.innerHTML = lang.text;
+
+      if (
+        lang.code === "ur" ||
+        lang.code === "ar"
+      ) {
+        newMarquee.setAttribute(
+          "direction",
+          "right"
+        );
+      } else {
+        newMarquee.setAttribute(
+          "direction",
+          "left"
+        );
+      }
+
+      const parent =
+        marquee.parentNode;
+
+      const nextSibling =
+        marquee.nextSibling;
+
+      marquee.remove();
+
+      if (nextSibling) {
+        parent.insertBefore(
+          newMarquee,
+          nextSibling
+        );
+      } else {
+        parent.appendChild(
+          newMarquee
+        );
+      }
+
+      marquee = newMarquee;
+
+      showLangToast(lang.name);
     }
-  ];
 
-  let index = 0;
-
-  marquee.innerHTML = marqueeTexts[0].text;
-  marquee.setAttribute("direction", "left");
-
-  function switchLanguage() {
-    index = (index + 1) % marqueeTexts.length;
-    const lang = marqueeTexts[index];
-
-    // নতুন marquee তৈরি করা
-    const newMarquee = document.createElement("marquee");
-    newMarquee.className = "cx";
-    newMarquee.innerHTML = lang.text;
-
-    // ডিরেকশন ঠিক করা
-    if (lang.code === "ur" || lang.code === "ar") {
-      newMarquee.setAttribute("direction", "right");
-    } else {
-      newMarquee.setAttribute("direction", "left");
-    }
-
-    // পুরানো marquee একই জায়গায় প্রতিস্থাপন করা
-    const parent = marquee.parentNode;
-    const nextSibling = marquee.nextSibling;
-    marquee.remove();
-    if (nextSibling) {
-      parent.insertBefore(newMarquee, nextSibling);
-    } else {
-      parent.appendChild(newMarquee);
-    }
-
-    marquee = newMarquee;
-
-    showToast(lang.name);
+    translateBtn.addEventListener(
+      "click",
+      switchLanguage
+    );
   }
 
-  function showToast(text) {
-    let toast = document.getElementById("langToast");
+
+  /* =========================================================
+     LANGUAGE TOAST
+  ========================================================= */
+
+  function showLangToast(text) {
+
+    let toast =
+      document.getElementById("langToast");
+
     if (!toast) {
-      toast = document.createElement("div");
+
+      toast =
+        document.createElement("div");
+
       toast.id = "langToast";
-      toast.style.position = "fixed";
-      toast.style.top = "70px";
-      toast.style.right = "20px";
-      toast.style.padding = "8px 14px";
-      toast.style.borderRadius = "20px";
-      toast.style.background = "rgba(0,0,0,0.65)";
-      toast.style.color = "#fff";
-      toast.style.fontSize = "13px";
-      toast.style.zIndex = "9999";
-      toast.style.opacity = "0";
-      toast.style.transition = "opacity 0.3s ease";
+
       document.body.appendChild(toast);
     }
 
     toast.innerText = text;
-    toast.style.opacity = "1";
-    setTimeout(() => toast.style.opacity = "0", 2000);
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2000);
   }
 
-  translateBtn.addEventListener("click", switchLanguage);
 
-});
-/* toast display */
-function showLangToast(text) {
-  if (!toast) return;
-  toast.innerText = text;
-  toast.classList.add("show");
+  /* =========================================================
+     AUTO THEME + MANUAL THEME
+  ========================================================= */
 
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2000);
-}
+  const themeToggle =
+    document.getElementById("themeToggle");
 
-/* language switch */
-function switchLanguage() {
-  if (!translateSelect) {
-    waitForTranslateSelect(switchLanguage);
-    return;
-  }
+  const qrImage =
+    document.getElementById("qrImage");
 
-  currentLangIndex = (currentLangIndex + 1) % languages.length;
-  const lang = languages[currentLangIndex];
+  function applyAutoTheme() {
 
-  translateSelect.value = lang.code;
-  translateSelect.dispatchEvent(new Event("change"));
+    const hour =
+      new Date().getHours();
 
-  showLangToast(lang.name);
-}
+    const isDay =
+      hour >= 6 && hour < 18;
 
-/* bind click */
-if (translateBtn) {
-  translateBtn.addEventListener("click", switchLanguage);
-}
+    const newTheme =
+      isDay ? "light" : "dark";
 
-/* -------------------------------------------
-   AUTO THEME (Day/Night) + MANUAL TOGGLE
---------------------------------------------*/
-const themeToggle = document.getElementById('themeToggle');
-const animToggle  = document.getElementById('animToggle');
-const qrImage     = document.getElementById('qrImage');
+    document.body.classList.remove(
+      "dark",
+      "light"
+    );
 
-function applyAutoTheme() {
-  const hour = new Date().getHours();
-  const isDay = hour >= 6 && hour < 18;
-  const newTheme = isDay ? 'light' : 'dark';
+    document.body.classList.add(
+      newTheme
+    );
 
-  if (!document.body.classList.contains(newTheme)) {
-    document.body.classList.remove('dark', 'light');
-    document.body.classList.add(newTheme);
-    if (document.getElementById("sharePopup").classList.contains('active')) {
-      qrImage.src = newTheme === "dark" ? "pngs/dark.png" : "pngs/light.png";
+    const sharePopup =
+      document.getElementById("sharePopup");
+
+    if (
+      qrImage &&
+      sharePopup &&
+      sharePopup.classList.contains("active")
+    ) {
+      qrImage.src =
+        newTheme === "dark"
+          ? "pngs/dark.png"
+          : "pngs/light.png";
     }
   }
-}
-applyAutoTheme();
-setInterval(applyAutoTheme, 20000000);
 
-themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  document.body.classList.toggle('light');
-  if (document.getElementById("sharePopup").classList.contains('active')) {
-    qrImage.src = document.body.classList.contains("dark") ? "pngs/dark.png" : "pngs/light.png";
+  applyAutoTheme();
+
+  setInterval(
+    applyAutoTheme,
+    20000000
+  );
+
+
+  if (themeToggle) {
+
+    themeToggle.addEventListener(
+      "click",
+      () => {
+
+        document.body.classList.toggle(
+          "dark"
+        );
+
+        document.body.classList.toggle(
+          "light"
+        );
+
+        if (qrImage) {
+
+          qrImage.src =
+            document.body.classList.contains(
+              "dark"
+            )
+              ? "pngs/dark.png"
+              : "pngs/light.png";
+        }
+      }
+    );
   }
-});
 
-/* -------------------------------------------
-   SIDEBAR MENU
---------------------------------------------*/
-const menuToggle   = document.getElementById('menuToggle');
-const sidebar      = document.getElementById('sidebar');
-const menuOverlay  = document.getElementById('menuOverlay');
-const closeMenu    = document.getElementById('closeMenu');
 
-function openMenu() {
-  sidebar.classList.add('active');
-  menuOverlay.classList.add('active');
-}
-function closeMenuFn() {
-  sidebar.classList.remove('active');
-  menuOverlay.classList.remove('active');
-}
-menuToggle.addEventListener('click', openMenu);
-closeMenu.addEventListener('click', closeMenuFn);
-menuOverlay.addEventListener('click', closeMenuFn);
+  /* =========================================================
+     SIDEBAR MENU
+  ========================================================= */
 
-/* -------------------------------------------
-   SHARE POPUP + QR + COPY
---------------------------------------------*/
-const shareBtns = document.querySelectorAll(".shareBtn");
-const sharePopup = document.getElementById("sharePopup");
-const shareOverlay = document.getElementById("shareOverlay");
-const closeSharePopup = document.getElementById("closeSharePopup");
-const shareLinkInput = document.getElementById("shareLink");
-const copyShareBtn = document.getElementById("copyShareBtn");
+  const menuToggle =
+    document.getElementById("menuToggle");
 
-shareBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const url = window.location.href;
-    shareLinkInput.value = url;
-    qrImage.src = document.body.classList.contains("dark") ? "pngs/dark.png" : "pngs/light.png";
-    sharePopup.classList.add("active");
-    shareOverlay.classList.add("active");
-    closeMenuFn();
+  const sidebar =
+    document.getElementById("sidebar");
+
+  const menuOverlay =
+    document.getElementById("menuOverlay");
+
+  const closeMenu =
+    document.getElementById("closeMenu");
+
+
+  function openMenu() {
+
+    if (sidebar)
+      sidebar.classList.add("active");
+
+    if (menuOverlay)
+      menuOverlay.classList.add("active");
+  }
+
+
+  function closeMenuFn() {
+
+    if (sidebar)
+      sidebar.classList.remove("active");
+
+    if (menuOverlay)
+      menuOverlay.classList.remove("active");
+  }
+
+
+  if (menuToggle)
+    menuToggle.addEventListener(
+      "click",
+      openMenu
+    );
+
+  if (closeMenu)
+    closeMenu.addEventListener(
+      "click",
+      closeMenuFn
+    );
+
+  if (menuOverlay)
+    menuOverlay.addEventListener(
+      "click",
+      closeMenuFn
+    );
+
+
+  /* =========================================================
+     SHARE POPUP + QR
+  ========================================================= */
+
+  const shareBtns =
+    document.querySelectorAll(".shareBtn");
+
+  const sharePopup =
+    document.getElementById("sharePopup");
+
+  const shareOverlay =
+    document.getElementById("shareOverlay");
+
+  const closeSharePopup =
+    document.getElementById(
+      "closeSharePopup"
+    );
+
+  const shareLinkInput =
+    document.getElementById("shareLink");
+
+  const copyShareBtn =
+    document.getElementById(
+      "copyShareBtn"
+    );
+
+
+  shareBtns.forEach(btn => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        if (shareLinkInput) {
+
+          shareLinkInput.value =
+            window.location.href;
+        }
+
+        if (qrImage) {
+
+          qrImage.src =
+            document.body.classList.contains(
+              "dark"
+            )
+              ? "pngs/dark.png"
+              : "pngs/light.png";
+        }
+
+        if (sharePopup)
+          sharePopup.classList.add(
+            "active"
+          );
+
+        if (shareOverlay)
+          shareOverlay.classList.add(
+            "active"
+          );
+
+        closeMenuFn();
+      }
+    );
   });
-});
 
-closeSharePopup.onclick = () => { 
-  sharePopup.classList.remove("active"); 
-  shareOverlay.classList.remove("active"); 
-};
-shareOverlay.addEventListener('click', () => { 
-  sharePopup.classList.remove("active"); 
-  shareOverlay.classList.remove("active"); 
-});
 
-copyShareBtn.addEventListener('click', () => {
-  navigator.clipboard.writeText(shareLinkInput.value).then(() => {
-    showToast("Link copied success");
-  }).catch(() => {
-    showToast("Failed to copy.");
+  if (closeSharePopup) {
+
+    closeSharePopup.onclick = () => {
+
+      if (sharePopup)
+        sharePopup.classList.remove(
+          "active"
+        );
+
+      if (shareOverlay)
+        shareOverlay.classList.remove(
+          "active"
+        );
+    };
+  }
+
+
+  if (shareOverlay) {
+
+    shareOverlay.addEventListener(
+      "click",
+      () => {
+
+        if (sharePopup)
+          sharePopup.classList.remove(
+            "active"
+          );
+
+        shareOverlay.classList.remove(
+          "active"
+        );
+      }
+    );
+  }
+
+
+  /* =========================================================
+     COPY SHARE LINK
+  ========================================================= */
+
+  if (copyShareBtn) {
+
+    copyShareBtn.addEventListener(
+      "click",
+      () => {
+
+        if (!shareLinkInput)
+          return;
+
+        navigator.clipboard
+          .writeText(
+            shareLinkInput.value
+          )
+
+          .then(() => {
+
+            showToast(
+              "Link copied success"
+            );
+          })
+
+          .catch(() => {
+
+            showToast(
+              "Failed to copy."
+            );
+          });
+      }
+    );
+  }
+
+
+  /* =========================================================
+     GENERAL TOAST
+  ========================================================= */
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById("toast");
+
+    if (!toast)
+      return;
+
+    toast.textContent = message;
+
+    toast.style.display =
+      "block";
+
+    setTimeout(() => {
+
+      toast.style.display =
+        "none";
+
+    }, 3000);
+  }
+
+
+  /* =========================================================
+     TAB SWITCHING
+  ========================================================= */
+
+  const tabItems =
+    document.querySelectorAll(
+      ".menu-item[data-target]"
+    );
+
+  const tabContents =
+    document.querySelectorAll(
+      ".tab-content"
+    );
+
+
+  tabContents.forEach(
+    tc => tc.style.display = "none"
+  );
+
+
+  if (tabContents[0]) {
+
+    tabContents[0].style.display =
+      "block";
+  }
+
+
+  tabItems.forEach(item => {
+
+    item.addEventListener(
+      "click",
+      () => {
+
+        const targetId =
+          item.getAttribute(
+            "data-target"
+          );
+
+        if (!targetId)
+          return;
+
+        tabContents.forEach(
+          tc =>
+            tc.style.display = "none"
+        );
+
+        const targetTab =
+          document.getElementById(
+            targetId
+          );
+
+        if (targetTab) {
+
+          targetTab.style.display =
+            "block";
+        }
+
+        closeMenuFn();
+      }
+    );
   });
-});
 
-/* -------------------------------------------
-   TOAST
---------------------------------------------*/
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.style.display = "block";
-  setTimeout(() => { toast.style.display = "none"; }, 3000);
-}
 
-/* -------------------------------------------
-   CANVAS ANIMATIONS
---------------------------------------------*/
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+  /* =========================================================
+     VISITOR COUNTER
+  ========================================================= */
 
-let animMode = 'particles';
-animToggle.addEventListener('click', () => {
-  animMode = (animMode === 'particles') ? 'fireworks' : 'particles';
-  particles = [];
-  fwArray = [];
-  fwParticles = [];
-});
+  function fetchVisitorCount() {
 
-/* Particles */
-const colors = ["#ff3b3b", "#3bff3b", "#3b3bff", "#ffff3b", "#ff3bff"];
-const sizes = [1,2,3,4,5,6,7,8,9];
-const mouse = { x: undefined, y: undefined, radius: 80 };
-window.addEventListener("mousemove", e => { mouse.x = e.x; mouse.y = e.y; });
+    fetch(
+      "https://api.counterapi.dev/v1/spearhasan.github.io/visits/up"
+    )
 
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = sizes[Math.floor(Math.random() * sizes.length)];
-    this.color = colors[Math.floor(Math.random() * colors.length)];
-    this.weight = Math.random() *  + 1;
-    this.directionX = Math.random() * 1 - 2;
+      .then(res => res.json())
+
+      .then(data => {
+
+        animateVisitorCount(
+          data.count
+        );
+      })
+
+      .catch(() => {
+
+        const el =
+          document.getElementById(
+            "visitorCount"
+          );
+
+        if (el)
+          el.innerText = "Error";
+      });
   }
-  update() {
-    if (this.y > canvas.height) {
-      this.y = 0 - this.size;
-      this.x = Math.random() * canvas.width;
-      this.weight = Math.random() * 1 + 3;
-    }
-    this.weight += 0.1;
-    this.y += this.weight;
-    this.x += this.directionX;
-    const dx = this.x - (mouse.x ?? -9999);
-    const dy = this.y - (mouse.y ?? -9999);
-    const distance = Math.sqrt(dx*dx + dy*dy);
-    if (distance < mouse.radius + this.size) {
-      this.y -= 2;
-      this.weight *= -0.5;
-    }
+
+
+  /* =========================================================
+     VISITOR COUNT ANIMATION
+  ========================================================= */
+
+  function animateVisitorCount(target) {
+
+    let current = 0;
+
+    const el =
+      document.getElementById(
+        "visitorCount"
+      );
+
+    if (!el)
+      return;
+
+    const speed = 60;
+
+    const step =
+      Math.ceil(target / 60);
+
+
+    const counter =
+      setInterval(() => {
+
+        current += step;
+
+        if (current >= target) {
+
+          current = target;
+
+          clearInterval(
+            counter
+          );
+        }
+
+        el.innerText =
+          current.toLocaleString(
+            "en-US"
+          );
+
+      }, speed);
   }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-}
-let particles = [];
-function initParticles() {
-  particles = [];
-  for (let i = 0; i < 200; i++) particles.push(new Particle());
-}
 
-/* Fireworks */
-let fwArray = [];
-let fwParticles = [];
-function rand(min, max) { return Math.random() * (max - min) + min; }
 
-class Firework {
-  constructor() {
-    this.x = canvas.width / 20;
-    this.y = canvas.height;
-    this.targetX = rand(100, canvas.width - 100);
-    this.targetY = rand(100, canvas.height / 2);
-    this.speed = 3;
-    this.angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
-    this.distanceToTarget = Math.hypot(this.targetX - this.x, this.targetY - this.y);
-    this.traveled = 0;
-    this.color = `hsl(${rand(1,500)},100%,50%)`;
-  }
-  update(index) {
-    const vx = Math.cos(this.angle) * this.speed;
-    const vy = Math.sin(this.angle) * this.speed;
-    this.x += vx; this.y += vy;
-    this.traveled += this.speed;
-    if (this.traveled >= this.distanceToTarget) {
-      fwArray.splice(index, 1);
-      createFWParticles(this.targetX, this.targetY, this.color);
-    }
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-}
+  /* =========================================================
+     INITIAL VISITOR COUNT
+  ========================================================= */
 
-class FWParticle {
-  constructor(x, y, color) {
-    this.x = x; this.y = y; this.color = color;
-    this.angle = rand(0, Math.PI * 2); this.speed = rand(2,12, 8);
-    this.friction = 0.95; this.gravity = 0.05;
-    this.alpha = 1; this.decay = rand(0.09, 0.01);
-  }
-  update(index) {
-    this.speed *= this.friction;
-    this.x += Math.cos(this.angle) * this.speed;
-    this.y += Math.sin(this.angle) * this.speed + this.gravity;
-    this.alpha -= this.decay;
-    if (this.alpha <= 0) fwParticles.splice(index, 1);
-  }
-  draw() {
-    ctx.save(); ctx.globalAlpha = this.alpha;
-    ctx.beginPath(); ctx.arc(this.x, this.y, 3, 2, Math.PI * 2);
-    ctx.fillStyle = this.color; 
-    ctx.fill(); 
-    ctx.restore();
-  }
-}
-function createFWParticles(x, y, color) {
-  let count = 160;
-  while (count--) fwParticles.push(new FWParticle(x, y, color));
-}
-
-/* Animate Loop */
-function animate() {
-  requestAnimationFrame(animate);
-  const isDark = document.body.classList.contains("dark");
-  ctx.fillStyle = (isDark ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)");
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  if (animMode === 'particles') {
-    if (particles.length === 0) initParticles();
-    particles.forEach(p => { p.update(); p.draw(); });
-  } else {
-    if (Math.random() < 0.2) fwArray.push(new Firework());
-    fwArray.forEach((fw, i) => { fw.update(i); fw.draw(); });
-    fwParticles.forEach((p, i) => { p.update(i); p.draw(); });
-  }
-}
-initParticles();
-animate();
-
-/* -------------------------------------------
-   TAB SWITCHING (Sidebar)
---------------------------------------------*/
-const tabItems = document.querySelectorAll(".menu-item[data-target]");
-const tabContents = document.querySelectorAll(".tab-content");
-tabContents.forEach(tc => tc.style.display = "none");
-if(tabContents[0]) tabContents[0].style.display = "block";
-
-tabItems.forEach(item => {
-  item.addEventListener("click", () => {
-    const targetId = item.getAttribute("data-target");
-    if(!targetId) return;
-    tabContents.forEach(tc => tc.style.display = "none");
-    const targetTab = document.getElementById(targetId);
-    if(targetTab) targetTab.style.display = "block";
-    closeMenuFn();
-  });
-});
-
-function fetchVisitorCount() {
-  fetch('https://api.counterapi.dev/v1/spearhasan.github.io/visits/up')
-    .then(res => res.json())
-    .then(data => animateVisitorCount(data.count))
-    .catch(() => document.getElementById('visitorCount').innerText = 'Error');
-}
-
-// YouTube-style animation
-function animateVisitorCount(target) {
-  let current = 0;
-  const el = document.getElementById('visitorCount');
-  const speed = 60;
-  const step = Math.ceil(target / 60);
-  
-  const counter = setInterval(() => {
-    current += step;
-    if (current >= target) {
-      current = target;
-      clearInterval(counter);
-    }
-    // ইংরেজি সংখ্যা
-    el.innerText = current.toLocaleString('en-US');
-  }, speed);
-}
-
-// Initial load
-fetchVisitorCount();
-
-// Click to refresh
-document.getElementById('visitorBox').addEventListener('click', () => {
   fetchVisitorCount();
+
+
+  /* =========================================================
+     REFRESH VISITOR COUNT
+  ========================================================= */
+
+  const visitorBox =
+    document.getElementById(
+      "visitorBox"
+    );
+
+  if (visitorBox) {
+
+    visitorBox.addEventListener(
+      "click",
+      fetchVisitorCount
+    );
+  }
+
 });
