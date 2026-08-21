@@ -633,7 +633,7 @@ white 100%
   font-family: myfont;
   position: relative;
   top: -50px;
-  z-index: 3;
+  z-index: 5;
 }
 
 @font-face{
