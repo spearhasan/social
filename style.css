@@ -1,4 +1,4 @@
-hu.social-link {
+.social-link {
   margin: 6px;
   display: inline-flex;
   align-items: center;
@@ -482,7 +482,7 @@ body.dark .desc{
   .wrap{ padding:12px; margin:12px; }  
 }  
 #sharePopup {
-background: #ffffff;
+background: #FFFFFF;
 display: flex;
 flex-direction: column;
 gap: 6px;   /* gap কমানো */
@@ -538,20 +538,7 @@ z-index: 20000;
 pointer-events: none;
 }
 
-#langToast.show {
-position: fixed;
-bottom: 20px;
-left: 50%;
-transform: translateX(-50%);
-background: #333;
-color: #fff;
-padding: 12px 20px;
-border-radius: 6px;
-font-size: 15px;
-z-index: 999;
-display: none;
-animation: fade 0.3s ease;
-}
+
 .box-main {
 position: fixed;
 
@@ -596,7 +583,7 @@ object-fit: cover;
 object-position: center center;
 
 position: relative;
-z-index: 0;
+z-index: -1;
 }
 
 /* ==============================
