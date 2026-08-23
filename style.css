@@ -3,16 +3,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-
-  font-size: 28px;
+  font-size: 28pt;
   font-weight: bold;
   text-decoration: none;
-
   position: relative;
   top: -50px;
   z-index: 5;
-
   transition: color 0.5s ease;
 }
 
@@ -41,12 +37,12 @@ Universal & Body Styles
 html, body {
 margin: 0;
 padding: 0;
-height: 800px;
-width: 300px;
+height: 80px;
+width: 30px;
 font-family: 'Noto Serif Bengali', serif;
 overflow: auto;
 transition: background 0.4s, color 0.4s;
-font-size: 15pt;
+font-size: 20pt;
 transition: all 0.5s ease;
 }
 
@@ -133,7 +129,7 @@ margin: 12px;
 border: 2px solid;
 background: #FF000000;
 position: relative;
-top: -60px;
+top: -75px;
 }
 
 .facebook {
@@ -248,36 +244,6 @@ font-weight: bold;
 body.light .popup h2, body.light #sharePopup h2 { color: #000; }
 body.dark  .popup h2, body.dark  #sharePopup h2 { color: #fff; }
 
-/* =========================
-Toast
-========================= */
-.toast {
-position: fixed;
-bottom: 20px;
-left: 50%;
-transform: translateX(-50%);
-background: #333;
-color: #fff;
-padding: 12px 20px;
-border-radius: 6px;
-font-size: 15px;
-z-index: 999;
-display: none;
-animation: fade 0.3s ease;
-}
-
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-
-/* =========================
-Canvas
-========================= */
-canvas#bg {
-position: fixed;
-top: 0;
-left: 0;
-z-index: 0;
-display: block;
-}
 
 /* =========================
 Tabs
@@ -356,7 +322,20 @@ color: #000;
 .sidebar .close-menu { font-size: 22px; cursor: pointer; color: #ff6666; line-height: 1; }
 .sidebar h3 { margin: 0; font-size: 20px; }
 .menu-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-.menu-item { display: flex; align-items: center; gap: 10px; padding: 12px 12px; border-radius: 12px; text-decoration: none; color: inherit; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
+.menu-item{ 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  padding: 12px 12px; 
+  border-radius: 12px; 
+  text-decoration: none; 
+  color: inherit; 
+  background: rgba(255,255,255,0.08); 
+  border: 1px solid rgba(255,255,255,0.12); 
+  -webkit-text-stroke: 0.3px #FEFEFE;
+  font-weight: 700;
+  
+}
 .menu-item:hover { background: rgba(255,255,255,0.15); }
 
 
@@ -490,12 +469,12 @@ gap: 6px;   /* gap কমানো */
 
 #shareLink {
 margin: 0;
-height: auto; /* খালি হলেও ফাঁক কমানো /
+height: auto;
 }
 #cover{
 padding: 0;
 }
-/ visitor counter in sidebar, same style as menu-item /
+ visitor counter in sidebar, same style as-item 
 #visitorBox {
 display: flex;
 align-items: center;
@@ -505,8 +484,8 @@ padding: 12px 12px;
 border-radius: 12px;
 text-decoration: none;
 color: inherit;
-background: rgba(255,255,255,0.08); / menu-item background /
-border: 1px solid #00FF45; / menu-item border */
+background: rgba(255,255,255,0.08);
+border: 1px solid #00FF45; 
 transition: all 0.5s ease;
 cursor: default;
 }
@@ -518,26 +497,6 @@ transform: scale(1.03);
 body.light #visitorBox{
 border-color: rgba(255, 0, 0, 1);
 }
-
-#langToast {
-position: fixed;
-top: 70px;
-right: 20px;
-padding: 8px 14px;
-border-radius: 20px;
-
-background: rgba(0,0,0,0.65);
-color: #fff;
-font-size: 13px;
-
-opacity: 0;
-transform: translateY(-10px);
-transition: opacity 0.3s ease, transform 0.3s ease;
-
-z-index: 20000;
-pointer-events: none;
-}
-
 
 .box-main {
 position: fixed;
@@ -593,7 +552,7 @@ WHITE GRADIENT
 .cx{
   font-family: myfont;
   position: relative;
-  top: -50px;
+  top: -65px;
   z-index: 1;
 }
 

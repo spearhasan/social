@@ -250,21 +250,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // showLangToast ফাংশন
   function showLangToast(name) {
     const toast = document.createElement("div");
-    toast.textContent = `ভাষা: ${name}`;
-    toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:5px;z-index:9999;opacity:0;transition:opacity 0.3s;";
+    toast.textContent = `${name}`;
+    toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:15px;z-index:9999;opacity:0;transition:opacity 0.3s;font-size:10px;";
     document.body.appendChild(toast);
     requestAnimationFrame(() => toast.style.opacity = "1");
     setTimeout(() => {
       toast.style.opacity = "0";
-      setTimeout(() => toast.remove(), 300);
-    }, 1500);
+      setTimeout(() => toast.remove(), 1100);
+    }, 700);
   }
 
   // showToast ফাংশন
   function showToast(message) {
     const toast = document.createElement("div");
-    toast.textContent = message;
-    toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:5px;z-index:9999;opacity:0;transition:opacity 0.3s;";
     document.body.appendChild(toast);
     requestAnimationFrame(() => toast.style.opacity = "1");
     setTimeout(() => {
