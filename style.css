@@ -37,12 +37,14 @@ Universal & Body Styles
 html, body {
 margin: 0;
 padding: 0;
-height: 80px;
-width: 30px;
+min-height: 100%;
+width: 100%;
+min-width: 320px;
 font-family: 'Noto Serif Bengali', serif;
-overflow: auto;
+overflow-x: hidden;
+overflow-y: auto;
 transition: background 0.4s, color 0.4s;
-font-size: 20pt;
+font-size: 16px;
 transition: all 0.5s ease;
 }
 
@@ -558,7 +560,7 @@ WHITE GRADIENT
 
 @font-face{
   font-family: myfont;
-  src: url(myfont.ttf);
+  src: url('https://spearhasan.github.io/social/myfont.ttf');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
