@@ -76,8 +76,7 @@ body[data-theme="dark"] .profile-card { border-color: var(--line); }
 .identity-row { min-height: 70px; margin-bottom: 17px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .eyebrow { margin: 0 0 4px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .15em; }
 h1 { margin: 0; display: flex; align-items: center; gap: 7px; font-size: clamp(25px, 6vw, 31px); font-weight: 800; letter-spacing: -.055em; line-height: 1.18; }
-.verified-badge { width: 20px; height: 20px; display: inline-grid; place-items: center; border-radius: 50%; color: #fff; background: #4daee8; }
-.verified-badge .icon { width: 13px; height: 13px; stroke-width: 2.8; }
+.verified-badge { width: 20px; height: 20px; flex: 0 0 auto; display: inline-block; background: url("https://spearhasan.github.io/social/pngs/verified-badge.svg") center / contain no-repeat; }
 .share-quick { width: 40px; height: 40px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 13px; color: var(--accent); background: var(--surface-soft); cursor: pointer; transition: transform .18s ease, background .18s ease; }
 .share-quick:hover { transform: translateY(-2px); background: rgba(92, 104, 238, .1); }
 .section-heading { margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }

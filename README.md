@@ -31,5 +31,6 @@ These are the public image URLs used by the profile pages and standalone page:
 
 - Profile photo and share preview: <https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg>
 - Cover photo (unchanged): <https://spearhasan.github.io/social/pngs/cover.png>
+- Verified badge (hosted locally): <{BADGE}>
 
-Keep those URLs absolute (including `https://`) in copied HTML so photos continue to load when the page is shared elsewhere. The older `y.png` file remains hosted to avoid breaking links that already use it.
+Keep those URLs absolute (including `https://`) in copied HTML so photos and the badge continue to load when the page is shared elsewhere. The older `y.png` file remains hosted to avoid breaking links that already use it. The restored badge artwork comes from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Twitter_Verified_Badge.svg); it is described as a public-domain geometric mark with a trademark notice.

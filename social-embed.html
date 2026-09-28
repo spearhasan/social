@@ -52,7 +52,7 @@
     .avatar { width: 106px; height: 106px; margin: -51px auto 10px; position: relative; display: block; border: 5px solid var(--surface); border-radius: 50%; object-fit: cover; object-position: center 26%; background: #e6eaf2; box-shadow: 0 8px 23px rgba(18,28,51,.2); }
     .eyebrow { margin: 0 0 4px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .15em; }
     h1 { margin: 0; display: flex; justify-content: center; align-items: center; gap: 7px; font-size: clamp(25px, 7vw, 31px); font-weight: 800; letter-spacing: -.05em; }
-    .verified { width: 20px; height: 20px; display: inline-grid; place-items: center; border-radius: 50%; color: #fff; background: #4daee8; font-size: 13px; font-weight: 900; letter-spacing: 0; }
+    .verified-badge { width: 20px; height: 20px; flex: 0 0 auto; display: inline-block; background: url("https://spearhasan.github.io/social/pngs/verified-badge.svg") center / contain no-repeat; }
     .tagline { margin: 7px 0 20px; color: var(--muted); font-size: 12px; line-height: 1.65; }
     .links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
     .social-link { min-width: 0; min-height: 62px; padding: 9px 10px; display: flex; align-items: center; gap: 9px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface); text-align: left; text-decoration: none; transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease; }
@@ -94,7 +94,7 @@
     <section class="content">
       <img class="avatar" src="https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg" alt="Spear Hasan-এর প্রোফাইল ছবি" fetchpriority="high">
       <p class="eyebrow">CREATOR · BANGLADESH</p>
-      <h1 id="profile-name">Spear Hasan <span class="verified" aria-label="Verified">✓</span></h1>
+      <h1 id="profile-name">Spear Hasan <span class="verified-badge" role="img" aria-label="Verified" title="Verified"></span></h1>
       <p class="tagline">সত্য বলি, ভয় পাই না।<br>আমার অফিসিয়াল সামাজিক যোগাযোগের লিংক</p>
       <nav class="links" aria-label="সামাজিক যোগাযোগের লিংক">
         <a class="social-link facebook" href="https://www.facebook.com/spearhasan1" target="_blank" rel="noopener noreferrer"><span class="social-icon"><svg class="icon"><use href="#facebook"/></svg></span><span class="link-copy"><strong>Spear Hasan</strong><small>Facebook profile</small></span></a>
