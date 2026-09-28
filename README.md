@@ -27,9 +27,9 @@ If a platform does not allow iframes, share the hosted page URL above. Social ne
 
 ## GitHub-hosted image sources
 
-These are the public image URLs used by the standalone page:
+These are the public image URLs used by the profile pages and standalone page:
 
-- Profile photo: <https://spearhasan.github.io/social/y.png>
-- Cover photo: <https://spearhasan.github.io/social/pngs/cover.png>
+- Profile photo and share preview: <https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg>
+- Cover photo (unchanged): <https://spearhasan.github.io/social/pngs/cover.png>
 
-Keep those URLs absolute (including `https://`) in copied HTML; relative paths such as `y.png` can point to the wrong website after a page is copied elsewhere.
+Keep those URLs absolute (including `https://`) in copied HTML so photos continue to load when the page is shared elsewhere. The older `y.png` file remains hosted to avoid breaking links that already use it.

@@ -4,9 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const body = document.body;
   const themeToggle = byId("themeToggle");
-  const translateBtn = byId("translateBtn");
-  const languageLabel = byId("languageLabel");
-  const motto = byId("motto");
   const menuToggle = byId("menuToggle");
   const sidebar = byId("sidebar");
   const menuOverlay = byId("menuOverlay");
@@ -20,38 +17,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const visitorCount = byId("visitorCount");
   let toastTimer;
 
-  const messages = [
-    { code: "BN", dir: "ltr", text: "আল্লাহ ধৈর্যধারীদের সাথে আছেন।" },
-    { code: "EN", dir: "ltr", text: "Allah is with those who are patient." },
-    { code: "HI", dir: "ltr", text: "अल्लाह धैर्य रखने वालों के साथ है।" },
-    { code: "UR", dir: "rtl", text: "اللہ صبر کرنے والوں کے ساتھ ہے۔" },
-    { code: "AR", dir: "rtl", text: "الله مع الصابرين." }
-  ];
-  let languageIndex = 0;
-
   function showToast(message) {
     if (!toast) return;
     toast.textContent = message;
     toast.classList.add("is-visible");
     window.clearTimeout(toastTimer);
     toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2200);
-  }
-
-  function setLanguage(index) {
-    const language = messages[index];
-    if (motto) {
-      motto.textContent = language.text;
-      motto.dir = language.dir;
-    }
-    if (languageLabel) languageLabel.textContent = language.code;
-  }
-
-  if (translateBtn) {
-    translateBtn.addEventListener("click", () => {
-      languageIndex = (languageIndex + 1) % messages.length;
-      setLanguage(languageIndex);
-      showToast(`Language: ${messages[languageIndex].code}`);
-    });
   }
 
   function setTheme(theme) {

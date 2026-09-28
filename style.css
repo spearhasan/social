@@ -56,7 +56,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .site-shell { width: min(100%, 620px); margin: 0 auto; }
 .topbar { min-height: 56px; margin: 0 0 19px; display: flex; align-items: center; justify-content: space-between; }
 .brand { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
-.brand-mark { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 14px; color: #fff; background: linear-gradient(145deg, #7884ff, #4f59dd); box-shadow: 0 7px 18px rgba(92, 104, 238, .28); font-size: 13px; font-weight: 800; letter-spacing: -.04em; }
+.brand-mark { width: 40px; height: 40px; flex: 0 0 auto; display: block; border-radius: 14px; object-fit: cover; object-position: center 26%; background: linear-gradient(145deg, #7884ff, #4f59dd); box-shadow: 0 7px 18px rgba(92, 104, 238, .28); }
 .brand strong, .brand small { display: block; }
 .brand strong { font-size: 14px; line-height: 1.2; letter-spacing: -.02em; }
 .brand small { margin-top: 3px; color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .15em; }
@@ -64,8 +64,6 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .icon-button { width: 42px; height: 42px; display: inline-grid; place-items: center; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface); box-shadow: var(--soft-shadow); cursor: pointer; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
 .icon-button:hover { transform: translateY(-2px); border-color: rgba(92, 104, 238, .38); }
 .icon-button .icon { width: 19px; height: 19px; }
-.language-button { width: auto; min-width: 66px; padding: 0 11px; display: inline-flex; justify-content: center; gap: 6px; color: var(--accent); font-size: 11px; font-weight: 800; }
-.language-button .icon { width: 18px; height: 18px; }
 .profile-card { overflow: hidden; border: 1px solid rgba(225, 230, 240, .85); border-radius: 26px; background: var(--surface); box-shadow: var(--shadow); }
 body[data-theme="dark"] .profile-card { border-color: var(--line); }
 .cover-wrap { height: auto; aspect-ratio: 3264 / 1226; position: relative; background: #dbe1ec; }
@@ -82,9 +80,6 @@ h1 { margin: 0; display: flex; align-items: center; gap: 7px; font-size: clamp(2
 .verified-badge .icon { width: 13px; height: 13px; stroke-width: 2.8; }
 .share-quick { width: 40px; height: 40px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 13px; color: var(--accent); background: var(--surface-soft); cursor: pointer; transition: transform .18s ease, background .18s ease; }
 .share-quick:hover { transform: translateY(-2px); background: rgba(92, 104, 238, .1); }
-.quote-card { margin-bottom: 24px; padding: 14px 16px; border: 1px solid rgba(92, 104, 238, .13); border-radius: 15px; background: linear-gradient(110deg, rgba(92, 104, 238, .075), rgba(24, 169, 133, .06)); }
-.quote-label { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
-.cx { min-height: 28px; margin: 6px 0 0; color: var(--ink); font-size: 14px; font-weight: 600; line-height: 1.7; }
 .section-heading { margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
 .section-heading h2 { margin: 0; font-size: 14px; font-weight: 800; letter-spacing: -.02em; }
 .section-heading p { margin: 3px 0 0; color: var(--muted); font-size: 10px; }
@@ -157,14 +152,12 @@ body[data-theme="dark"] .youtube .social-icon { color: #ff8991; background: rgba
   .social-icon { width: 33px; height: 33px; border-radius: 10px; }
   .social-copy strong { font-size: 10px; }
   .social-copy small { font-size: 8px; }
-  .quote-card { margin-bottom: 19px; }
 }
 @media (max-width: 360px) {
   .links { grid-template-columns: 1fr; }
   .brand strong { font-size: 12px; }
   .top-actions { gap: 5px; }
   .icon-button { width: 38px; height: 38px; }
-  .language-button { min-width: 58px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
