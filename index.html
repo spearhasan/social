@@ -14,8 +14,8 @@
   <meta name="twitter:image" content="https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg">
   <title>Spear Hasan | Official Website</title>
   <link rel="icon" type="image/jpeg" href="https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg">
-  <link rel="stylesheet" href="https://spearhasan.github.io/social/style.css">
-  <script src="https://spearhasan.github.io/social/main.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
 </head>
 <body data-theme="light">
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -37,21 +37,22 @@
   <div class="site-shell">
     <header class="topbar">
       <a class="brand" href="https://spearhasan.github.io/social/" aria-label="Spear Hasan home">
-        <img class="brand-mark" src="https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg" alt="">
+        <img class="brand-mark media-protected" src="https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg" alt="" draggable="false">
         <span><strong>Spear Hasan</strong><small>OFFICIAL PROFILE</small></span>
       </a>
       <div class="top-actions" aria-label="Page controls">
-        <button class="icon-button" id="menuToggle" type="button" aria-label="মেনু খুলুন" aria-expanded="false" title="মেনু"><svg class="icon"><use href="#i-menu"/></svg></button>
         <button class="icon-button" id="themeToggle" type="button" aria-label="থিম পরিবর্তন করুন" title="থিম পরিবর্তন"><svg class="icon"><use href="#i-moon"/></svg></button>
+        <button class="header-share" id="shareButton" type="button" aria-label="প্রোফাইল শেয়ার করুন" title="শেয়ার"><svg class="icon"><use href="#i-share"/></svg><span>শেয়ার</span></button>
+        <button class="icon-button" id="menuToggle" type="button" aria-label="মেনু খুলুন" aria-expanded="false" title="মেনু"><svg class="icon"><use href="#i-menu"/></svg></button>
       </div>
     </header>
 
     <main id="tab-home" class="profile-card tab-content">
-      <div class="cover-wrap">
-        <img class="cover" src="https://spearhasan.github.io/social/pngs/cover.png" alt="Spear Hasan-এর কভার" fetchpriority="high">
+      <div class="cover-wrap media-protected">
+        <img class="cover media-protected" src="https://spearhasan.github.io/social/pngs/cover.png" alt="Spear Hasan-এর কভার" fetchpriority="high" draggable="false">
         <div class="cover-shade"></div>
         <span class="profile-tag"><span class="online-dot"></span> OFFICIAL PAGE</span>
-        <img class="avatar" src="https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg" alt="Spear Hasan" fetchpriority="high">
+        <img class="avatar media-protected" src="https://spearhasan.github.io/social/pngs/spear-hasan-profile.jpg" alt="Spear Hasan" fetchpriority="high" draggable="false">
       </div>
       <section class="profile-content">
         <div class="identity-row">
@@ -59,7 +60,7 @@
             <p class="eyebrow">CREATOR · BANGLADESH</p>
             <h1 id="profileName">Spear Hasan <span class="verified-badge" role="img" aria-label="Verified" title="Verified"></span></h1>
           </div>
-          <button class="share-quick" id="quickShare" type="button" aria-label="প্রোফাইল শেয়ার করুন" title="শেয়ার"><svg class="icon"><use href="#i-share"/></svg></button>
+          <a class="profile-contact" href="mailto:spearhasan@gmail.com?subject=যোগাযোগ" aria-label="ইমেইলে যোগাযোগ করুন"><svg class="icon"><use href="#i-mail"/></svg><span>যোগাযোগ</span></a>
         </div>
         <div class="section-heading"><div><h2>আমার সঙ্গে যুক্ত হোন</h2><p>নিচের যেকোনো প্ল্যাটফর্মে ফলো করুন</p></div><svg class="icon heading-sparkle"><use href="#i-sparkles"/></svg></div>
         <nav class="links" aria-label="সামাজিক যোগাযোগের লিংক">
@@ -68,7 +69,6 @@
           <a class="social-card tiktok" href="https://www.tiktok.com/@spear_hasan" target="_blank" rel="noopener noreferrer"><span class="social-icon"><svg class="icon"><use href="#i-tiktok"/></svg></span><span class="social-copy"><strong>TikTok</strong><small>@spear_hasan</small></span><span class="link-arrow" aria-hidden="true">↗</span></a>
           <a class="social-card youtube" href="https://youtube.com/@spear_hasan" target="_blank" rel="noopener noreferrer"><span class="social-icon"><svg class="icon"><use href="#i-youtube"/></svg></span><span class="social-copy"><strong>YouTube</strong><small>Spear Hasan</small></span><span class="link-arrow" aria-hidden="true">↗</span></a>
         </nav>
-        <button class="share-button" id="shareButton" type="button"><svg class="icon"><use href="#i-share"/></svg><span>প্রোফাইল শেয়ার করুন</span></button>
       </section>
     </main>
 
@@ -78,11 +78,10 @@
   <div class="menu-backdrop" id="menuOverlay"></div>
   <aside class="sidebar" id="sidebar" aria-label="প্রধান মেনু" aria-hidden="true">
     <div class="drawer-heading"><div><span class="eyebrow">QUICK ACCESS</span><h2>মেনু</h2></div><button class="icon-button" id="closeMenu" type="button" aria-label="মেনু বন্ধ করুন"><svg class="icon"><use href="#i-close"/></svg></button></div>
-    <img class="drawer-cover" src="https://spearhasan.github.io/social/pngs/cover.png" alt="">
+    <img class="drawer-cover media-protected" src="https://spearhasan.github.io/social/pngs/cover.png" alt="" draggable="false">
     <nav class="menu-list">
       <button class="menu-item" type="button" data-target="tab-home"><svg class="icon"><use href="#i-home"/></svg><span>হোম</span><span class="menu-arrow">↗</span></button>
       <a class="menu-item" href="mailto:spearhasan@gmail.com?subject=যোগাযোগ"><svg class="icon"><use href="#i-mail"/></svg><span>ইমেইল</span><span class="menu-arrow">↗</span></a>
-      <button class="menu-item shareBtn" type="button"><svg class="icon"><use href="#i-share"/></svg><span>শেয়ার</span><span class="menu-arrow">↗</span></button>
       <a class="menu-item" href="https://spearhasan.github.io/social/ai-remover/"><svg class="icon"><use href="#i-sparkles"/></svg><span>AI Remover</span><span class="menu-arrow">↗</span></a>
     </nav>
     <div class="visitor-box" id="visitorBox"><svg class="icon"><use href="#i-eye"/></svg><span>ভিজিটর</span><strong id="visitorCount">0</strong></div>
