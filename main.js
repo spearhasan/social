@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (error) {
     setTheme(body.dataset.theme || "light");
   }
+
   if (themeToggle) {
     let lastPointer = null;
     themeToggle.addEventListener("pointerdown", (event) => {
@@ -61,23 +62,44 @@ document.addEventListener("DOMContentLoaded", () => {
       const x = pointer ? pointer.x : (event.clientX || rect.left + rect.width / 2);
       const y = pointer ? pointer.y : (event.clientY || rect.top + rect.height / 2);
       lastPointer = null;
-      const radius = Math.ceil(Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)));
+
+      // Add a generous margin so Chrome's anti-aliased clip edge cannot leave
+      // uncovered pixels at a corner or along the scrollbar/viewport edge.
+      const viewportDiagonal = Math.hypot(window.innerWidth, window.innerHeight);
+      const radius = Math.ceil(viewportDiagonal * 1.25 + 8);
       let transition;
+      let reveal;
       themeTransitioning = true;
       themeToggle.disabled = true;
       document.documentElement.classList.add("theme-ripple-active");
+
       try {
         transition = document.startViewTransition(() => setTheme(nextTheme));
         await transition.ready;
-        const reveal = document.documentElement.animate(
-          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-          { duration: 620, easing: "cubic-bezier(.2,.75,.25,1)", pseudoElement: "::view-transition-new(root)" }
+        reveal = document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${radius}px at ${x}px ${y}px)`
+            ]
+          },
+          {
+            duration: 700,
+            easing: "cubic-bezier(.2,.75,.25,1)",
+            fill: "both",
+            pseudoElement: "::view-transition-new(root)"
+          }
         );
         await reveal.finished;
+        // Keep the final frame painted until the browser has committed the
+        // view transition, preventing a one-frame snap at the end in Chrome.
         await transition.finished;
       } catch (error) {
+        if (reveal) reveal.cancel();
         if (body.dataset.theme !== nextTheme) setTheme(nextTheme);
-        if (transition) { try { await transition.finished; } catch (ignored) { /* Continue with the selected theme. */ } }
+        if (transition) {
+          try { await transition.finished; } catch (ignored) { /* Continue with the selected theme. */ }
+        }
       } finally {
         document.documentElement.classList.remove("theme-ripple-active");
         themeTransitioning = false;
