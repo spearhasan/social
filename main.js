@@ -13,9 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const shareLinkInput = byId("shareLink");
   const qrImage = byId("qrImage");
   const toast = byId("toast");
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   const visitorBox = byId("visitorBox");
   const visitorCount = byId("visitorCount");
   let toastTimer;
+  let themeTransitioning = false;
 
   function showToast(message) {
     if (!toast) return;
@@ -28,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function setTheme(theme) {
     const selectedTheme = theme === "dark" ? "dark" : "light";
     body.dataset.theme = selectedTheme;
+    if (themeColorMeta) themeColorMeta.content = selectedTheme === "dark" ? "#101421" : "#f4f7fc";
     const use = themeToggle && themeToggle.querySelector("use");
     if (use) use.setAttribute("href", selectedTheme === "dark" ? "#i-sun" : "#i-moon");
     if (themeToggle) themeToggle.setAttribute("aria-label", selectedTheme === "dark" ? "লাইট থিম চালু করুন" : "ডার্ক থিম চালু করুন");
@@ -40,7 +43,47 @@ document.addEventListener("DOMContentLoaded", () => {
     setTheme(body.dataset.theme || "light");
   }
   if (themeToggle) {
-    themeToggle.addEventListener("click", () => setTheme(body.dataset.theme === "dark" ? "light" : "dark"));
+    let lastPointer = null;
+    themeToggle.addEventListener("pointerdown", (event) => {
+      lastPointer = { x: event.clientX, y: event.clientY, time: performance.now() };
+    });
+    themeToggle.addEventListener("click", async (event) => {
+      if (themeTransitioning) return;
+      const nextTheme = body.dataset.theme === "dark" ? "light" : "dark";
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reducedMotion || typeof document.startViewTransition !== "function") {
+        setTheme(nextTheme);
+        return;
+      }
+
+      const rect = themeToggle.getBoundingClientRect();
+      const pointer = lastPointer && performance.now() - lastPointer.time < 1000 ? lastPointer : null;
+      const x = pointer ? pointer.x : (event.clientX || rect.left + rect.width / 2);
+      const y = pointer ? pointer.y : (event.clientY || rect.top + rect.height / 2);
+      lastPointer = null;
+      const radius = Math.ceil(Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)));
+      let transition;
+      themeTransitioning = true;
+      themeToggle.disabled = true;
+      document.documentElement.classList.add("theme-ripple-active");
+      try {
+        transition = document.startViewTransition(() => setTheme(nextTheme));
+        await transition.ready;
+        const reveal = document.documentElement.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 620, easing: "cubic-bezier(.2,.75,.25,1)", pseudoElement: "::view-transition-new(root)" }
+        );
+        await reveal.finished;
+        await transition.finished;
+      } catch (error) {
+        if (body.dataset.theme !== nextTheme) setTheme(nextTheme);
+        if (transition) { try { await transition.finished; } catch (ignored) { /* Continue with the selected theme. */ } }
+      } finally {
+        document.documentElement.classList.remove("theme-ripple-active");
+        themeTransitioning = false;
+        themeToggle.disabled = false;
+      }
+    });
   }
 
   function openMenu() {
@@ -81,7 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (shareOverlay) shareOverlay.classList.remove("active");
   }
-  document.querySelectorAll(".shareBtn, #shareButton, #quickShare").forEach((button) => button.addEventListener("click", openShare));
+  const headerShareButton = byId("shareButton");
+  if (headerShareButton) headerShareButton.addEventListener("click", openShare);
   [byId("closeSharePopup"), shareOverlay].forEach((element) => {
     if (element) element.addEventListener("click", closeShare);
   });
@@ -117,6 +161,13 @@ document.addEventListener("DOMContentLoaded", () => {
       closeShare();
     }
   });
+
+  document.querySelectorAll(".media-protected").forEach((media) => media.setAttribute("draggable", "false"));
+  const blockCasualImageSaving = (event) => {
+    if (event.target instanceof Element && event.target.closest(".media-protected")) event.preventDefault();
+  };
+  document.addEventListener("contextmenu", blockCasualImageSaving, true);
+  document.addEventListener("dragstart", blockCasualImageSaving, true);
 
   const COUNTER_API_URL = "https://countapi.mileshilliard.com/api/v1/hit/spearhasan_social_visits";
   const GET_COUNTER_API_URL = "https://countapi.mileshilliard.com/api/v1/get/spearhasan_social_visits";
