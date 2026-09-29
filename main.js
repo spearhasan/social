@@ -61,7 +61,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const x = pointer ? pointer.x : (event.clientX || rect.left + rect.width / 2);
       const y = pointer ? pointer.y : (event.clientY || rect.top + rect.height / 2);
       lastPointer = null;
-      const radius = Math.ceil(Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)));
+      const viewportWidth = Math.max(window.innerWidth, document.documentElement.clientWidth, window.visualViewport?.width || 0);
+      const viewportHeight = Math.max(window.innerHeight, document.documentElement.clientHeight, window.visualViewport?.height || 0);
+      const cornerDistances = [
+        Math.hypot(x, y),
+        Math.hypot(viewportWidth - x, y),
+        Math.hypot(x, viewportHeight - y),
+        Math.hypot(viewportWidth - x, viewportHeight - y)
+      ];
+      const overscan = Math.max(40, Math.ceil(Math.hypot(viewportWidth, viewportHeight) * 0.06));
+      const radius = Math.ceil(Math.max(...cornerDistances) + overscan);
       let transition;
       themeTransitioning = true;
       themeToggle.disabled = true;
@@ -71,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await transition.ready;
         const reveal = document.documentElement.animate(
           { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-          { duration: 620, easing: "cubic-bezier(.2,.75,.25,1)", pseudoElement: "::view-transition-new(root)" }
+          { duration: 760, delay: 80, easing: "cubic-bezier(.22,.72,.24,1)", pseudoElement: "::view-transition-new(root)" }
         );
         await reveal.finished;
         await transition.finished;
