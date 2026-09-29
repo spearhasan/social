@@ -9,7 +9,7 @@
 
 🌐 Connect With Me
 
-<p align="center"><a href="https://spearhasan.github.io/in">
+<p align="center"><a href="https://spearhasan.github.io/social">
   <img src="https://img.shields.io/badge/🌐%20Official%20Website-Visit%20Website-111827?style=for-the-badge" />
 </a><a href="https://www.facebook.com/spearhasan1">
   <img src="https://img.shields.io/badge/Facebook-Page-1877F2?style=for-the-badge&logo=facebook&logoColor=white" />
@@ -19,16 +19,7 @@
   <img src="https://img.shields.io/badge/YouTube-Channel-FF0000?style=for-the-badge&logo=youtube&logoColor=white" />
 </a><a href="https://www.instagram.com/spearhasan">
   <img src="https://img.shields.io/badge/Instagram-@spearhasan-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />
-</a></p>---
-
-📱 My Platforms
-
-Platform| Link
-🌐 Website| "spearhasan.github.io/in" (https://spearhasan.github.io/in)
-🔵 Facebook| "Spear Hasan" (https://www.facebook.com/spearhasan1)
-🎵 TikTok| "@spear_hasan" (https://www.tiktok.com/@spear_hasan)
-▶️ YouTube| "@spear_hasan" (https://youtube.com/@spear_hasan)
-📸 Instagram| "@spearhasan" (https://www.instagram.com/spearhasan)
+</a></p>
 
 ---
 
