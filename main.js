@@ -16,8 +16,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   const visitorBox = byId("visitorBox");
   const visitorCount = byId("visitorCount");
+  const designToggle = byId("designToggle");
+  const designLabelFull = document.querySelector(".design-label-full");
+  const designLabelShort = document.querySelector(".design-label-short");
+  const designOrder = ["glass", "skeuo", "neo", "clay"];
+  const designNames = {
+    glass: { full: "Liquid Glass", short: "Glass" },
+    skeuo: { full: "Skeuomorphism", short: "Skeuo" },
+    neo: { full: "Neumorphism", short: "Neo" },
+    clay: { full: "Claymorphism", short: "Clay" }
+  };
   let toastTimer;
   let themeTransitioning = false;
+  let designTransitioning = false;
 
   function showToast(message) {
     if (!toast) return;
@@ -37,10 +48,87 @@ document.addEventListener("DOMContentLoaded", () => {
     try { localStorage.setItem("social-theme", selectedTheme); } catch (error) { /* Storage may be unavailable in private contexts. */ }
   }
 
+  function setDesign(design) {
+    const selectedDesign = Object.prototype.hasOwnProperty.call(designNames, design) ? design : "clay";
+    body.dataset.design = selectedDesign;
+    const selectedName = designNames[selectedDesign];
+    const currentIndex = designOrder.indexOf(selectedDesign);
+    const nextName = designNames[designOrder[(currentIndex + 1) % designOrder.length]].full;
+    if (designLabelFull) designLabelFull.textContent = selectedName.full;
+    if (designLabelShort) designLabelShort.textContent = selectedName.short;
+    if (designToggle) {
+      designToggle.setAttribute("aria-label", `ডিজাইন: ${selectedName.full}; পরেরটি ${nextName}`);
+      designToggle.title = `${selectedName.full} → ${nextName}`;
+    }
+    try { localStorage.setItem("social-design", selectedDesign); } catch (error) { /* Keep the selector usable when storage is blocked. */ }
+  }
+
   try {
     setTheme(localStorage.getItem("social-theme") || body.dataset.theme || "light");
+    setDesign(localStorage.getItem("social-design") || body.dataset.design || "clay");
   } catch (error) {
     setTheme(body.dataset.theme || "light");
+    setDesign(body.dataset.design || "clay");
+  }
+
+  if (designToggle) {
+    let lastDesignPointer = null;
+    designToggle.addEventListener("pointerdown", (event) => {
+      lastDesignPointer = { x: event.clientX, y: event.clientY, time: performance.now() };
+    });
+    designToggle.addEventListener("click", async (event) => {
+      if (designTransitioning) return;
+      const currentIndex = designOrder.indexOf(body.dataset.design);
+      const nextDesign = designOrder[(currentIndex + 1 + designOrder.length) % designOrder.length];
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reducedMotion || typeof document.startViewTransition !== "function") {
+        setDesign(nextDesign);
+        return;
+      }
+
+      const rect = designToggle.getBoundingClientRect();
+      const pointer = lastDesignPointer && performance.now() - lastDesignPointer.time < 1000 ? lastDesignPointer : null;
+      const x = pointer ? pointer.x : (event.clientX || rect.left + rect.width / 2);
+      const y = pointer ? pointer.y : (event.clientY || rect.top + rect.height / 2);
+      lastDesignPointer = null;
+      const radius = Math.ceil(Math.hypot(window.innerWidth, window.innerHeight) * 1.25 + 8);
+      let transition;
+      let reveal;
+      designTransitioning = true;
+      designToggle.disabled = true;
+      document.documentElement.classList.add("theme-ripple-active");
+
+      try {
+        transition = document.startViewTransition(() => setDesign(nextDesign));
+        await transition.ready;
+        reveal = document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${radius}px at ${x}px ${y}px)`
+            ]
+          },
+          {
+            duration: 760,
+            easing: "cubic-bezier(.16,1,.3,1)",
+            fill: "both",
+            pseudoElement: "::view-transition-new(root)"
+          }
+        );
+        await reveal.finished;
+        await transition.finished;
+      } catch (error) {
+        if (reveal) reveal.cancel();
+        if (body.dataset.design !== nextDesign) setDesign(nextDesign);
+        if (transition) {
+          try { await transition.finished; } catch (ignored) { /* Keep the selected design. */ }
+        }
+      } finally {
+        document.documentElement.classList.remove("theme-ripple-active");
+        designTransitioning = false;
+        designToggle.disabled = false;
+      }
+    });
   }
 
   if (themeToggle) {
