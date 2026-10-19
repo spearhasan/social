@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuToggle = byId("menuToggle");
   const sidebar = byId("sidebar");
   const menuOverlay = byId("menuOverlay");
+  const shareButton = byId("shareButton");
   const sharePopup = byId("sharePopup");
   const shareOverlay = byId("shareOverlay");
   const shareLinkInput = byId("shareLink");
@@ -14,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const visitorBox = byId("visitorBox");
   const visitorCount = byId("visitorCount");
   let toastTimer;
+  let menuReturnFocus = null;
+  let shareReturnFocus = null;
 
   function showToast(message) {
     if (!toast) return;
@@ -26,62 +29,75 @@ document.addEventListener("DOMContentLoaded", () => {
   function setTheme(theme) {
     const selectedTheme = theme === "dark" ? "dark" : "light";
     body.dataset.theme = selectedTheme;
-    if (themeColorMeta) themeColorMeta.content = selectedTheme === "dark" ? "#171715" : "#f5f2ec";
+    if (themeColorMeta) themeColorMeta.content = selectedTheme === "dark" ? "#09090b" : "#fafafa";
     const use = themeToggle && themeToggle.querySelector("use");
     if (use) use.setAttribute("href", selectedTheme === "dark" ? "#i-sun" : "#i-moon");
-    if (themeToggle) themeToggle.setAttribute("aria-label", selectedTheme === "dark" ? "লাইট থিম চালু করুন" : "ডার্ক থিম চালু করুন");
-    try { localStorage.setItem("social-theme", selectedTheme); } catch (error) { /* Storage can be disabled. */ }
+    if (themeToggle) {
+      themeToggle.setAttribute("aria-label", selectedTheme === "dark" ? "লাইট থিম চালু করুন" : "ডার্ক থিম চালু করুন");
+      themeToggle.setAttribute("aria-pressed", String(selectedTheme === "dark"));
+    }
+    try { localStorage.setItem("social-theme", selectedTheme); } catch (error) { /* Storage may be disabled. */ }
   }
-
   try { setTheme(localStorage.getItem("social-theme") || body.dataset.theme || "light"); }
   catch (error) { setTheme(body.dataset.theme || "light"); }
-
   if (themeToggle) themeToggle.addEventListener("click", () => setTheme(body.dataset.theme === "dark" ? "light" : "dark"));
 
+  function focusableWithin(container) {
+    if (!container) return [];
+    return [...container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+      .filter((element) => !element.hasAttribute("hidden") && element.getClientRects().length > 0);
+  }
   function openMenu() {
     if (!sidebar || !menuOverlay) return;
+    menuReturnFocus = document.activeElement;
+    sidebar.inert = false;
     sidebar.classList.add("active");
     menuOverlay.classList.add("active");
     sidebar.setAttribute("aria-hidden", "false");
-    if (menuToggle) menuToggle.setAttribute("aria-expanded", "true");
-    const closeButton = byId("closeMenu");
-    if (closeButton) closeButton.focus();
+    menuToggle?.setAttribute("aria-expanded", "true");
+    byId("closeMenu")?.focus();
   }
-  function closeMenu() {
+  function closeMenu(restoreFocus = true) {
     if (sidebar) {
       sidebar.classList.remove("active");
       sidebar.setAttribute("aria-hidden", "true");
+      sidebar.inert = true;
     }
-    if (menuOverlay) menuOverlay.classList.remove("active");
-    if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
+    menuOverlay?.classList.remove("active");
+    menuToggle?.setAttribute("aria-expanded", "false");
+    if (restoreFocus && menuReturnFocus instanceof HTMLElement) menuReturnFocus.focus();
+    menuReturnFocus = null;
   }
-  if (menuToggle) menuToggle.addEventListener("click", openMenu);
-  if (byId("closeMenu")) byId("closeMenu").addEventListener("click", closeMenu);
-  if (menuOverlay) menuOverlay.addEventListener("click", closeMenu);
-  document.querySelectorAll(".menu-item[href^='#']").forEach((link) => link.addEventListener("click", closeMenu));
+  menuToggle?.addEventListener("click", openMenu);
+  byId("closeMenu")?.addEventListener("click", () => closeMenu());
+  menuOverlay?.addEventListener("click", () => closeMenu());
+  document.querySelectorAll(".menu-item[href^='#']").forEach((link) => link.addEventListener("click", () => closeMenu(false)));
 
   function openShare() {
+    if (!sharePopup || !shareOverlay) return;
+    shareReturnFocus = document.activeElement;
     if (shareLinkInput) shareLinkInput.value = window.location.href;
     if (qrImage && shareLinkInput) qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(shareLinkInput.value)}`;
-    if (sharePopup) {
-      sharePopup.classList.add("active");
-      sharePopup.setAttribute("aria-hidden", "false");
-    }
-    if (shareOverlay) shareOverlay.classList.add("active");
-    closeMenu();
-    const closeButton = byId("closeSharePopup");
-    if (closeButton) closeButton.focus();
+    sharePopup.inert = false;
+    sharePopup.classList.add("active");
+    sharePopup.setAttribute("aria-hidden", "false");
+    shareOverlay.classList.add("active");
+    closeMenu(false);
+    byId("closeSharePopup")?.focus();
   }
-  function closeShare() {
+  function closeShare(restoreFocus = true) {
     if (sharePopup) {
       sharePopup.classList.remove("active");
       sharePopup.setAttribute("aria-hidden", "true");
+      sharePopup.inert = true;
     }
-    if (shareOverlay) shareOverlay.classList.remove("active");
+    shareOverlay?.classList.remove("active");
+    if (restoreFocus && shareReturnFocus instanceof HTMLElement) shareReturnFocus.focus();
+    shareReturnFocus = null;
   }
-  if (byId("shareButton")) byId("shareButton").addEventListener("click", openShare);
-  if (byId("closeSharePopup")) byId("closeSharePopup").addEventListener("click", closeShare);
-  if (shareOverlay) shareOverlay.addEventListener("click", closeShare);
+  shareButton?.addEventListener("click", openShare);
+  byId("closeSharePopup")?.addEventListener("click", () => closeShare());
+  shareOverlay?.addEventListener("click", () => closeShare());
 
   async function copyShareLink() {
     if (!shareLinkInput) return;
@@ -96,11 +112,25 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast(copied ? "লিংক কপি হয়েছে" : "লিংকটি নির্বাচন করে কপি করুন");
     }
   }
-  [byId("copyShareBtn"), byId("copyShareText")].forEach((button) => {
-    if (button) button.addEventListener("click", copyShareLink);
-  });
+  [byId("copyShareBtn"), byId("copyShareText")].forEach((button) => button?.addEventListener("click", copyShareLink));
+
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") { closeMenu(); closeShare(); }
+    const activeLayer = sharePopup?.classList.contains("active") ? sharePopup : (sidebar?.classList.contains("active") ? sidebar : null);
+    if (event.key === "Escape") {
+      if (sharePopup?.classList.contains("active")) closeShare();
+      else if (sidebar?.classList.contains("active")) closeMenu();
+      return;
+    }
+    if (event.key !== "Tab" || !activeLayer) return;
+    const items = focusableWithin(activeLayer);
+    if (!items.length) { event.preventDefault(); return; }
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !activeLayer.contains(document.activeElement))) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !activeLayer.contains(document.activeElement))) {
+      event.preventDefault(); first.focus();
+    }
   });
 
   const COUNTER_API_URL = "https://countapi.mileshilliard.com/api/v1/hit/spearhasan_social_visits";
@@ -131,6 +161,5 @@ document.addEventListener("DOMContentLoaded", () => {
     const newVisit = storageGet("lastVisitDate") !== today;
     if (newVisit) storageSet("lastVisitDate", today);
     fetchVisitorCount(newVisit);
-    visitorBox.addEventListener("click", () => fetchVisitorCount(false));
   }
 });
