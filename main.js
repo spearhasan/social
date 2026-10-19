@@ -42,6 +42,42 @@ document.addEventListener("DOMContentLoaded", () => {
   catch (error) { setTheme(body.dataset.theme || "light"); }
   if (themeToggle) themeToggle.addEventListener("click", () => setTheme(body.dataset.theme === "dark" ? "light" : "dark"));
 
+  const scrollProgress = byId("scrollProgress");
+  let progressFrame = 0;
+  function updateScrollProgress() {
+    if (!scrollProgress) return;
+    const range = document.documentElement.scrollHeight - window.innerHeight;
+    const amount = range > 0 ? Math.min(1, Math.max(0, window.scrollY / range)) : 0;
+    scrollProgress.style.transform = `scaleX(${amount})`;
+  }
+  function scheduleScrollProgress() {
+    if (progressFrame) return;
+    progressFrame = window.requestAnimationFrame(() => {
+      progressFrame = 0;
+      updateScrollProgress();
+    });
+  }
+  window.addEventListener("scroll", scheduleScrollProgress, { passive: true });
+  window.addEventListener("resize", scheduleScrollProgress, { passive: true });
+  updateScrollProgress();
+
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (!motionPreference.matches && "IntersectionObserver" in window) {
+    const revealItems = [...document.querySelectorAll("[data-reveal]")];
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -32px 0px" });
+    revealItems.forEach((element, index) => {
+      element.style.setProperty("--reveal-delay", `${(index % 4) * 70}ms`);
+      revealObserver.observe(element);
+    });
+    document.documentElement.classList.add("motion-ready");
+  }
+
   function focusableWithin(container) {
     if (!container) return [];
     return [...container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')]
