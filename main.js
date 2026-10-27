@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const byId = (id) => document.getElementById(id);
   const body = document.body;
   const themeToggle = byId("themeToggle");
+  const designToggle = byId("designToggle");
+  const designLabelFull = document.querySelector(".design-label-full");
+  const designLabelShort = document.querySelector(".design-label-short");
   const menuToggle = byId("menuToggle");
   const sidebar = byId("sidebar");
   const menuOverlay = byId("menuOverlay");
@@ -14,6 +17,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   const visitorBox = byId("visitorBox");
   const visitorCount = byId("visitorCount");
+  const designOrder = ["glass", "skeuo", "neo", "clay"];
+  const designNames = {
+    glass: { full: "Liquid Glass", short: "Glass" },
+    skeuo: { full: "Skeuomorphism", short: "Skeuo" },
+    neo: { full: "Neumorphism", short: "Neo" },
+    clay: { full: "Claymorphism", short: "Clay" }
+  };
+  const themeColors = {
+    clay: { light: "#f7f2ec", dark: "#121015" },
+    glass: { light: "#e7f1f6", dark: "#101d27" },
+    skeuo: { light: "#e3e7eb", dark: "#1d2630" },
+    neo: { light: "#e2e5ec", dark: "#1a2028" }
+  };
   let toastTimer;
   let menuReturnFocus = null;
   let shareReturnFocus = null;
@@ -29,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function setTheme(theme) {
     const selectedTheme = theme === "dark" ? "dark" : "light";
     body.dataset.theme = selectedTheme;
-    if (themeColorMeta) themeColorMeta.content = selectedTheme === "dark" ? "#09090b" : "#fafafa";
+    if (themeColorMeta) themeColorMeta.content = (themeColors[body.dataset.design] || themeColors.clay)[selectedTheme];
     const use = themeToggle && themeToggle.querySelector("use");
     if (use) use.setAttribute("href", selectedTheme === "dark" ? "#i-sun" : "#i-moon");
     if (themeToggle) {
@@ -38,9 +54,93 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     try { localStorage.setItem("social-theme", selectedTheme); } catch (error) { /* Storage may be disabled. */ }
   }
-  try { setTheme(localStorage.getItem("social-theme") || body.dataset.theme || "light"); }
-  catch (error) { setTheme(body.dataset.theme || "light"); }
-  if (themeToggle) themeToggle.addEventListener("click", () => setTheme(body.dataset.theme === "dark" ? "light" : "dark"));
+  function setDesign(design) {
+    const selectedDesign = Object.prototype.hasOwnProperty.call(designNames, design) ? design : "clay";
+    body.dataset.design = selectedDesign;
+    const selectedName = designNames[selectedDesign];
+    const nextName = designNames[designOrder[(designOrder.indexOf(selectedDesign) + 1) % designOrder.length]].full;
+    if (designLabelFull) designLabelFull.textContent = selectedName.full;
+    if (designLabelShort) designLabelShort.textContent = selectedName.short;
+    if (designToggle) {
+      designToggle.setAttribute("aria-label", `ডিজাইন: ${selectedName.full}; পরেরটি ${nextName}`);
+      designToggle.title = `${selectedName.full} → ${nextName}`;
+    }
+    if (themeColorMeta) themeColorMeta.content = (themeColors[selectedDesign] || themeColors.clay)[body.dataset.theme === "dark" ? "dark" : "light"];
+    try { localStorage.setItem("social-design", selectedDesign); } catch (error) { /* Storage may be disabled. */ }
+  }
+  try {
+    setTheme(localStorage.getItem("social-theme") || body.dataset.theme || "light");
+    setDesign(localStorage.getItem("social-design") || body.dataset.design || "clay");
+  } catch (error) {
+    setTheme(body.dataset.theme || "light");
+    setDesign(body.dataset.design || "clay");
+  }
+
+  let themeTransitioning = false;
+  async function applyWithRipple(button, event, update) {
+    if (!button || themeTransitioning) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion || typeof document.startViewTransition !== "function") { update(); return; }
+
+    const rect = button.getBoundingClientRect();
+    const savedPoint = button.__themePointer && performance.now() - button.__themePointer.time < 1000 ? button.__themePointer : null;
+    const rawX = savedPoint ? savedPoint.x : (event.clientX || rect.left + rect.width / 2);
+    const rawY = savedPoint ? savedPoint.y : (event.clientY || rect.top + rect.height / 2);
+    const x = Math.max(0, Math.min(window.innerWidth, rawX));
+    const y = Math.max(0, Math.min(window.innerHeight, rawY));
+    button.__themePointer = null;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const radius = Math.ceil(Math.max(
+      Math.hypot(x, y), Math.hypot(width - x, y),
+      Math.hypot(x, height - y), Math.hypot(width - x, height - y)
+    ) + 8);
+    let applied = false;
+    const applyOnce = () => { if (!applied) { update(); applied = true; } };
+    let transition;
+    let reveal;
+    themeTransitioning = true;
+    button.disabled = true;
+    document.documentElement.classList.add("theme-ripple-active");
+    try {
+      transition = document.startViewTransition(applyOnce);
+      await transition.ready;
+      reveal = document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 720, easing: "cubic-bezier(.16,1,.3,1)", fill: "both", pseudoElement: "::view-transition-new(root)" }
+      );
+      await reveal.finished;
+      await transition.finished;
+    } catch (error) {
+      if (reveal) reveal.cancel();
+      applyOnce();
+      if (transition) { try { await transition.finished; } catch (ignored) { /* Keep the selected appearance. */ } }
+    } finally {
+      document.documentElement.classList.remove("theme-ripple-active");
+      themeTransitioning = false;
+      button.disabled = false;
+    }
+  }
+  [themeToggle, designToggle].forEach((button) => button?.addEventListener("pointerdown", (event) => {
+    button.__themePointer = { x: event.clientX, y: event.clientY, time: performance.now() };
+  }));
+  themeToggle?.addEventListener("click", (event) => {
+    const nextTheme = body.dataset.theme === "dark" ? "light" : "dark";
+    applyWithRipple(themeToggle, event, () => setTheme(nextTheme));
+  });
+  designToggle?.addEventListener("click", (event) => {
+    const currentIndex = designOrder.indexOf(body.dataset.design);
+    const nextDesign = designOrder[(currentIndex + 1) % designOrder.length];
+    applyWithRipple(designToggle, event, () => setDesign(nextDesign));
+  });
+
+  document.querySelectorAll(".media-protected").forEach((media) => {
+    media.draggable = false;
+    media.addEventListener("dragstart", (event) => event.preventDefault());
+  });
+  document.addEventListener("contextmenu", (event) => {
+    if (event.target instanceof Element && event.target.closest(".media-protected")) event.preventDefault();
+  }, true);
 
   const scrollProgress = byId("scrollProgress");
   let progressFrame = 0;
