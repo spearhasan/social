@@ -4,8 +4,8 @@
   "start_url": "/social/",
   "scope": "/social/",
   "display": "standalone",
-  "background_color": "#f6f0e7",
-  "theme_color": "#f6f0e7",
+  "background_color": "#f1effb",
+  "theme_color": "#f1effb",
   "icons": [
     {
       "src": "/social/pngs/Favicon/favicon-192x192.png",
